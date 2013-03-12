@@ -110,7 +110,7 @@ sub addbugcomment($$)
 
 sub addsrlinks($@)
 { my($bugid, @sr)=@_;
-	return unless $bugid=~s/bnc#//; # ignore others for now
+	return 2 unless $bugid=~s/bnc#//; # ignore others for now
 	eval { # catch die
 		my @sr2=filtersr(bugjson(getbug($bugid)), @sr);
 		return unless @sr2;

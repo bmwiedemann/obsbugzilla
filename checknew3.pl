@@ -1,6 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
+# zypper in perl-SOAP-Lite perl-LWP-Protocol-https
 # use https://hermes.opensuse.org/feeds/77208.rdf | 77212 - needs ~10 mins to update
 # usage: ./checknew3.pl
 
@@ -27,23 +28,39 @@ if(!$rdf || $rdf!~m{<title>new submitreq</title>}) {
 my $rdfdata=XMLin($rdf);
 my $item=$rdfdata->{channel}->{item};
 foreach my $i (@$item) {
-	next unless $i->{title}=~m/^\[obs submit-request (\d+)\]/;
-	my $sr=$1;
+	my ($sr,$type);
+	if($i->{title}=~m/^\[obs (maintenance_incident|submit|delete)-request (\d+)\]/) {
+		$sr=$2;
+		$type=$1;
+	}
+	next unless $sr;
 	my $descr=$i->{description};
    my $lt=qr/(?:<|&lt;)/;
    my $gt=qr/(?:>|&gt;)/;
-	next unless $descr=~m!${lt}pre$gt\s+\S+ -$gt openSUSE:((?:Evergreen:)?[^:/]*)[^/]*/([^/ \n]*)!; # target
-	diag $descr;
-	my ($targetdistri, $package)=($1,$2);
+	my ($targetdistri, $package);
+	if($type eq "delete") {
+		if($descr=~m/openSUSE:Factory/) {
+			#print "SR:$sr $type $descr";
+		}
+		next;
+	}
+	if($type eq "maintenance_incident") {
+		($targetdistri, $package)=("Maintenance","");
+	} else {
+		next unless $descr=~m!${lt}pre$gt\s+\S+ -$gt openSUSE:((?:Evergreen:)?[^:/]*)[^/]*/([^/ \n]*)!; # target
+		diag $descr;
+		($targetdistri, $package)=($1,$2);
+	}
    $descr=~s/change[sd] files:.*//s; # drop diff - mentions too many bnc
 	foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
-		$mention=~s/bug#([67]\d{5}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
+		$mention=~s/bug#([6-9]\d{5}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
 #		print "$sr ($targetdistri / $package) mention: $mention\n";
 		addentry(\%bugmap2, $mention, $sr);
 		addsrinfo($sr, $targetdistri, $package);
 	}
 }
 
+my $hadfail=0;
 # check which entries were new
 foreach my $bugid (sort(keys(%bugmap2))) {
 	my $diff=diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
@@ -52,12 +69,17 @@ foreach my $bugid (sort(keys(%bugmap2))) {
 #		join("", map {"https://build.opensuse.org/request/show/$_\n"} @$diff)."\n";
 #		print $msg;
 		print "./bugzillaaddsr.pl $bugid @$diff\n";
-		addsrlinks($bugid, @$diff) and print "OK\n";
+		if(addsrlinks($bugid, @$diff)) {
+			print "OK\n";
+		} else {
+			print "failed\n";
+			$hadfail=1;
+		}
 #		system("./bugzillaaddsr.pl", $bugid, @$diff);
 	}
 }
 
-%data=%bugmap2;
+%data=%bugmap2 unless $hadfail;
 
 untie(%data);
 
