@@ -20,9 +20,9 @@ sub diag(@) #{print @_,"\n"}
 {}
 
 
-my $rdf=get("https://hermes.opensuse.org/feeds/77208.rdf");
+my $rdf=get($obssupport::hermesurl);
 if(!$rdf || $rdf!~m{<title>new submitreq</title>}) {
-	system('echo "https://hermes.opensuse.org/feeds/77208.rdf failed" | mailx -s OBS/hermes -c bwiedemann@suse.de -c coolo@suse.de cwh@suse.de');
+	system('echo "'.$obssupport::hermesurl.' failed" | mailx -s OBS/hermes -c bwiedemann@suse.de -c coolo@suse.de cwh@suse.de');
 	print "opensuse site failed\n" ; exit 17
 } # opensuse site failed
 my $rdfdata=XMLin($rdf);

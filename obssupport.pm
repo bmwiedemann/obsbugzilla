@@ -41,6 +41,9 @@ use SOAP::Transport::HTTP;  # Need for Basic Authorization subroutine
 use XMLRPC::Lite;           # From the SOAP::Lite Module
 use JSON::XS;
 our ($username,$password);
+our $apiserver="api.opensuse.org";
+our $hermesurl="https://hermes.opensuse.org/feeds/77208.rdf";
+our $privatecomment=0;
 eval(`/bin/cat $ENV{HOME}/.bugzillarc`);
 
 my $bugzillahandle;
