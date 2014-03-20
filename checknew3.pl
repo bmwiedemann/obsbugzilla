@@ -2,6 +2,7 @@
 use strict;
 
 # zypper in perl-SOAP-Lite perl-LWP-Protocol-https
+# https://mercurius.suse.de/feeds/264.rdf
 # use https://hermes.opensuse.org/feeds/77208.rdf | 77212 - needs ~10 mins to update
 # usage: ./checknew3.pl
 
@@ -20,16 +21,17 @@ sub diag(@) #{print @_,"\n"}
 {}
 
 
-my $rdf=get($obssupport::hermesurl);
+my $rdf=get("https://mercurius.suse.de/feeds/264.rdf");
 if(!$rdf || $rdf!~m{<title>new submitreq</title>}) {
-	system('echo "'.$obssupport::hermesurl.' failed" | mailx -s OBS/hermes -c bwiedemann@suse.de -c coolo@suse.de cwh@suse.de');
-	print "opensuse site failed\n" ; exit 17
+	system('echo "https://mercurius.suse.de/feeds/264.rdf failed" | mailx -s IBS/mercurius bwiedemann@suse.de');
+	print "IBS site failed\n" ; exit 17
 } # opensuse site failed
+$rdf=~s/[\001-\010\013-\014\016-\037]//g; # drop invalid control chars
 my $rdfdata=XMLin($rdf);
 my $item=$rdfdata->{channel}->{item};
 foreach my $i (@$item) {
 	my ($sr,$type);
-	if($i->{title}=~m/^\[obs (maintenance_incident|submit|delete)-request (\d+)\]/) {
+	if($i->{title}=~m/^\[ibs (maintenance_incident|submit|delete)-request (\d+)\]/) {
 		$sr=$2;
 		$type=$1;
 	}
@@ -47,13 +49,15 @@ foreach my $i (@$item) {
 	if($type eq "maintenance_incident") {
 		($targetdistri, $package)=("Maintenance","");
 	} else {
-		next unless $descr=~m!${lt}pre$gt\s+\S+ -$gt openSUSE:((?:Evergreen:)?[^:/]*)[^/]*/([^/ \n]*)!; # target
+		next unless $descr=~m!${lt}pre$gt\s+\S+ -$gt SUSE:([^:/]*[^/]*)/([^/ \n]*)!; # target
 		diag $descr;
 		($targetdistri, $package)=($1,$2);
+		$targetdistri=~s/:(Update|Test|GA)\b//g;
 	}
    $descr=~s/change[sd] files:.*//s; # drop diff - mentions too many bnc
 	foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
 		$mention=~s/bug#([6-9]\d{5}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
+		$mention=~s/userbnc#/bnc#/; # https://build.suse.de/request/show/30168
 		$mention=~s/BNC#/bnc#/;
 		$mention=~s/boo#([8-9]\d{5}\b)/bnc#$1/; #bugzilla.opensuse.org
 		$mention=~s/bsc#([8-9]\d{5}\b)/bnc#$1/; #bugzilla.suse.com

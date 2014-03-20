@@ -12,7 +12,10 @@ Normally, Bernhard is running these scripts for everyone (one instance for OBS a
 For running this yourself, you need a ~/.bugzillarc with
 $username="yourbugzillaaccount";
 $password="xxx";
-$namespace="openSUSE:";
+$apiserver="api.suse.de";
+$bsname="IBS";
+$namespace="SUSE:";
+$privatecomment=1;
 
 INSTALL:
   zypper in perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS perl-LWP-Protocol-https perl-MLDBM python-pika osc
