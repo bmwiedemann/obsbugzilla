@@ -4,7 +4,9 @@ from OBS submit requests that mention bnc#
 For this to work you need a ~/.bugzillarc with
 $username="yourbugzillaaccount";
 $password="xxx";
-$namespace="openSUSE:";
+$apiserver="api.suse.de";
+$namespace="SUSE:";
+$privatecomment=1;
 
 INSTALL:
   zypper in perl-SOAP-Lite perl-XMLRPC-Lite

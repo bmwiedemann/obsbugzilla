@@ -53,7 +53,7 @@ foreach my $sr (sort keys %$requests) {
 		my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
 		next unless $p && $p=~m/^$obssupport::namespace(.*)/;
 		my $targetdistri1=$1;
-		$targetdistri1=~s/:Update$//;
+		$targetdistri1=~s/:(Update|Test|GA)\b//g;
 		$p=$a->{target}->{package} || $a->{source}->{package};
 		next unless $p;
 		next if $p eq "patchinfo";
@@ -94,7 +94,7 @@ foreach my $bugid (sort(keys(%bugmap2))) {
 #		my $msg="> https://bugzilla.suse.com/show_bug.cgi?id=$bugid\nThis bug ($bugid) was mentioned in\n".
 #		join("", map {"https://build.opensuse.org/request/show/$_\n"} @$diff)."\n";
 #		print $msg;
-		print "obs ./bugzillaaddsr.pl $bugid @$diff\n";
+		print "ibs ./bugzillaaddsr.pl $bugid @$diff\n";
 		if(addsrlinks($bugid, @$diff)) {
 			print "OK\n";
 		} else {
