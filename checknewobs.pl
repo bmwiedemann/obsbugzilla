@@ -21,10 +21,7 @@ sub diag(@) #{print @_,"\n"}
 sub get_requests($)
 {
 	my $ns=shift;
-	my @a=gmtime(time-24*60*60); $a[4]++; $a[5]+=1900; 
-	my $since=sprintf("%04i-%02i-%02i",$a[5],$a[4],$a[3]);
-	open(my $f, "-|", qq!osc api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
-	#open(my $f, "-|", qq!osc api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review')+and+state/\@when>='$since'"!) or die $!;
+	open(my $f, "-|", qq!osc -A https://api.suse.de api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review')"!) or die $!;
 	#open(my $f, "<", "request.new.xml") or die $!;
    local $/;
 	my $xml=<$f>;
@@ -54,17 +51,17 @@ foreach my $sr (sort keys %$requests) {
 		next unless $p && $p=~m/^openSUSE:(.*)/;
 		my $targetdistri1=$1;
 		$targetdistri1=~s/:Update$//;
+		$targetdistri->{$targetdistri1}=1;
 		$p=$a->{target}->{package} || $a->{source}->{package};
 		next unless $p;
 		next if $p eq "patchinfo";
 		$p=~s/\.openSUSE_1\d\.\d_Update//;
-		$targetdistri->{$targetdistri1}=1;
 		$package->{$p}=1;
 		$type=$a->{type};
 		#print "$sr: $type @$targetdistri / $package\n";
 	}
 	next unless $type;
-	my $descr=$data->{description}||"";
+	my $descr=$data->{description};
    my $lt=qr/(?:<|&lt;)/;
    my $gt=qr/(?:>|&gt;)/;
 	if($type eq "delete") {
@@ -93,18 +90,20 @@ foreach my $bugid (sort(keys(%bugmap2))) {
 #		my $msg="> https://bugzilla.novell.com/show_bug.cgi?id=$bugid\nThis bug ($bugid) was mentioned in\n".
 #		join("", map {"https://build.opensuse.org/request/show/$_\n"} @$diff)."\n";
 #		print $msg;
-		print "obs ./bugzillaaddsr.pl $bugid @$diff\n";
+if(0){
+		print "./bugzillaaddsr.pl $bugid @$diff\n";
 		if(addsrlinks($bugid, @$diff)) {
 			print "OK\n";
 		} else {
 			print "failed\n";
 			$hadfail=1;
 		}
+}
 #		system("./bugzillaaddsr.pl", $bugid, @$diff);
 	}
 }
 
-%data=%bugmap2 unless $hadfail;
+#%data=%bugmap2 unless $hadfail;
 
 untie(%data);
 #print "checknewobs.pl done\n"
