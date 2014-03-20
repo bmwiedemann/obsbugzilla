@@ -1,0 +1,13 @@
+This tool updates bugzilla entries with information
+from OBS submit requests that mention bnc#
+
+For this to work you need a ~/.bugzillarc with
+$username="yourbugzillaaccount";
+$password="xxx";
+
+To use this tool with bnc's XMLRPC,
+you need an account with the corporate flag set
+
+Once configs are in place, configure via crontab -e
+0 * * * * cd ~/obsbugzilla && ./checknewobs.pl
+
