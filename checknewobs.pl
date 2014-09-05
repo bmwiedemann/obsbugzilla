@@ -85,7 +85,6 @@ foreach my $sr (sort keys %$requests) {
 	}
 }
 
-my $hadfail=0;
 # check which entries were new
 foreach my $bugid (sort(keys(%bugmap2))) {
 	my $diff=diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
@@ -98,13 +97,13 @@ foreach my $bugid (sort(keys(%bugmap2))) {
 			print "OK\n";
 		} else {
 			print "failed\n";
-			$hadfail=1;
+			$bugmap2{$bugid} = $data{$bugid}; # avoid adding it as done
 		}
 #		system("./bugzillaaddsr.pl", $bugid, @$diff);
 	}
 }
 
-%data=%bugmap2 unless $hadfail;
+%data=%bugmap2;
 
 untie(%data);
 #print "checknewobs.pl done\n"
