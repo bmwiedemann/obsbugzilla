@@ -58,6 +58,8 @@ foreach my $i (@$item) {
 	foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
 		$mention=~s/userbnc#/bnc#/; # https://build.suse.de/request/show/30168
 		$mention=~s/BNC#/bnc#/;
+		$mention=~s/boo#([8-9]\d{5}\b)/bnc#$1/; #bugzilla.opensuse.org
+		$mention=~s/bsc#([8-9]\d{5}\b)/bnc#$1/; #bugzilla.suse.com
 		$mention=~s/bug#(\b[6-9]\d{5}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
 #		print "$sr ($targetdistri / $package) mention: $mention\n";
 		addentry(\%bugmap2, $mention, $sr);
