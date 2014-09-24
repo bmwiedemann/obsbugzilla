@@ -54,6 +54,9 @@ foreach my $i (@$item) {
    $descr=~s/change[sd] files:.*//s; # drop diff - mentions too many bnc
 	foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
 		$mention=~s/bug#([6-9]\d{5}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
+		$mention=~s/BNC#/bnc#/;
+		$mention=~s/boo#([8-9]\d{5}\b)/bnc#$1/; #bugzilla.opensuse.org
+		$mention=~s/bsc#([8-9]\d{5}\b)/bnc#$1/; #bugzilla.suse.com
 #		print "$sr ($targetdistri / $package) mention: $mention\n";
 		addentry(\%bugmap2, $mention, $sr);
 		addsrinfo($sr, $targetdistri, $package);
