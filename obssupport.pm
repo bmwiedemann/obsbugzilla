@@ -46,6 +46,7 @@ our $hermesurl="https://hermes.opensuse.org/feeds/77208.rdf";
 our $namespace="openSUSE:";
 our $privatecomment=0;
 eval(`/bin/cat $ENV{HOME}/.bugzillarc`);
+our $buildserver=$apiserver; $buildserver=~s/api\./build./; # by convention
 
 my $bugzillahandle;
 sub bugzillahandle()
@@ -94,7 +95,7 @@ sub filtersr($@)
 
 sub srurl(@)
 {
-	return join("",map {"https://build.opensuse.org/request/show/$_\n"} @_);
+	return join("",map {"https://$buildserver/request/show/$_\n"} @_);
 }
 
 sub srurlplusinfo(@)
@@ -103,7 +104,7 @@ sub srurlplusinfo(@)
 		my $sr=$_;
 		my $info="";
 		if(my $i=$srinfo{$sr}) {$info=" $i->{distri} / $i->{package}"}
-	   "https://build.opensuse.org/request/show/$sr$info\n";
+		srurl($sr.$info);
 	 } @_);
 }
 
