@@ -67,7 +67,7 @@ foreach my $i (@$item) {
 foreach my $bugid (sort(keys(%bugmap2))) {
 	my $diff=diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
 	if($diff && @$diff) {
-#		my $msg="> https://bugzilla.novell.com/show_bug.cgi?id=$bugid\nThis bug ($bugid) was mentioned in\n".
+#		my $msg="> https://bugzilla.suse.com/show_bug.cgi?id=$bugid\nThis bug ($bugid) was mentioned in\n".
 #		join("", map {"https://build.opensuse.org/request/show/$_\n"} @$diff)."\n";
 #		print $msg;
 		print "./bugzillaaddsr.pl $bugid @$diff\n";
