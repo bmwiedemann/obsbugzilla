@@ -51,7 +51,7 @@ foreach my $sr (sort keys %$requests) {
 		next unless $a->{target};
 		next unless $a->{type} =~ m/submit|maintenance_incident/;
 	   my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
-		next unless $p && $p=~m/^openSUSE:(.*)/;
+		next unless $p && $p=~m/^$obssupport::namespace(.*)/;
 		my $targetdistri1=$1;
 		$targetdistri1=~s/:Update$//;
 		$p=$a->{target}->{package} || $a->{source}->{package};
