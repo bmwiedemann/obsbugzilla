@@ -26,7 +26,7 @@ sub get_requests($)
 	open(my $f, "-|", qq!osc api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
 	#open(my $f, "-|", qq!osc api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review')+and+state/\@when>='$since'"!) or die $!;
 	#open(my $f, "<", "request.new.xml") or die $!;
-   local $/;
+	local $/;
 	my $xml=<$f>;
 	close $f;
 	return $xml;
@@ -50,7 +50,7 @@ foreach my $sr (sort keys %$requests) {
 	foreach my $a (@{$data->{action}}) {
 		next unless $a->{target};
 		next unless $a->{type} =~ m/submit|maintenance_incident/;
-	   my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
+		my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
 		next unless $p && $p=~m/^$obssupport::namespace(.*)/;
 		my $targetdistri1=$1;
 		$targetdistri1=~s/:Update$//;
@@ -65,8 +65,8 @@ foreach my $sr (sort keys %$requests) {
 	}
 	next unless $type;
 	my $descr=$data->{description}||"";
-   my $lt=qr/(?:<|&lt;)/;
-   my $gt=qr/(?:>|&gt;)/;
+	my $lt=qr/(?:<|&lt;)/;
+	my $gt=qr/(?:>|&gt;)/;
 	if($type eq "delete") {
 		if($descr=~m/openSUSE:Factory/) {
 			#print "SR:$sr $type $descr";

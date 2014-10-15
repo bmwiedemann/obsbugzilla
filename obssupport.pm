@@ -72,7 +72,7 @@ sub getbug($)
 { my($bugid)=@_;
 	my $proxy=bugzillahandle();
 	my $soapresult;
-   eval {$soapresult = $proxy->call('Bug.comments', {ids=>[$bugid]});};
+	eval {$soapresult = $proxy->call('Bug.comments', {ids=>[$bugid]});};
 	$soapresult ||= {_content=>[0,1,2,3,"failed $@"]};
 }
 sub bugjson($)
