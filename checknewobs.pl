@@ -35,8 +35,8 @@ sub get_requests($)
 my $requests=get_requests($obssupport::namespace);
 #die length($requests);
 if(!$requests || $requests!~m{<collection matches=}) {
-	system('echo "'.$obssupport::hermesurl.' failed" | mailx -s OBS -c bwiedemann@suse.de');
-	print "opensuse site failed\n" ; exit 17
+	system('echo "OBS SR source failed" | mailx -s OBS bwiedemann@suse.de');
+	print "OBS api failed\n" ; exit 17
 } # opensuse site failed
 my $reqdata=XMLin($requests, ForceArray=>['action','history'], keyattr=>['id']);
 $requests=$reqdata->{request};
