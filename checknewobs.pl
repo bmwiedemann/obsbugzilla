@@ -57,7 +57,7 @@ foreach my $sr (sort keys %$requests) {
 		$p=$a->{target}->{package} || $a->{source}->{package};
 		next unless $p;
 		next if $p eq "patchinfo";
-		$p=~s/\.openSUSE_1\d\.\d_Update//;
+		$p=~s/\.openSUSE_1\d\.\d(_Update)?//;
 		$targetdistri->{$targetdistri1}=1;
 		$package->{$p}=1;
 		$type=$a->{type};
