@@ -46,7 +46,7 @@ foreach my $sr (sort keys %$requests) {
 	my $data=$requests->{$sr};
 	my ($type,$targetdistri, $package);
    # reduce spamminess by skipping requests that are no more interesting
-	next if $data->{state}{name} =~ m/deleted|revoked|superseded/; 
+	next if !$data->{state} || $data->{state}{name} =~ m/deleted|revoked|superseded/;
 	foreach my $a (@{$data->{action}}) {
 		next unless $a->{target};
 		next unless $a->{type} =~ m/submit|maintenance_incident/;
