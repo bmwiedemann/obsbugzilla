@@ -6,6 +6,9 @@ $username="yourbugzillaaccount";
 $password="xxx";
 $namespace="openSUSE:";
 
+INSTALL:
+  zypper in perl-SOAP-Lite perl-XMLRPC-Lite
+
 To use this tool with bnc's XMLRPC,
 you need an account with the corporate flag set
 
