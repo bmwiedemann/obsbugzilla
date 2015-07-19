@@ -38,7 +38,7 @@ if(!$requests || $requests!~m{<collection matches=}) {
 	system('echo "OBS SR source failed" | mailx -s OBS bwiedemann@suse.de');
 	print "OBS api failed\n" ; exit 17
 } # opensuse site failed
-my $reqdata=XMLin($requests, ForceArray=>['action','history'], keyattr=>['id']);
+my $reqdata=XMLin($requests, ForceArray=>['request','action','history'], keyattr=>['id']);
 $requests=$reqdata->{request};
 use JSON::XS; my $coder = JSON::XS->new->ascii->pretty->allow_nonref->allow_blessed->convert_blessed;
 #print $coder->encode($reqdata);
