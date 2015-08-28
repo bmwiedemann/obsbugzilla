@@ -15,3 +15,7 @@ you need an account with the corporate flag set
 Once configs are in place, configure via crontab -e
 0 * * * * cd ~/obsbugzilla && ./checknewobs.pl
 
+
+Implementation details:
+The script maintains an issuemention.dbm file about mentions that were already processed in order to avoid duplicates in bugzilla, even when it misbehaves.
+
