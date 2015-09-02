@@ -9,11 +9,13 @@ use XML::Simple;
 use MLDBM qw(DB_File Storable);
 use Fcntl;
 use obssupport;
+use gitsupport;
 my %data;
 my $dbname="issuemention.dbm";
 tie(%data, "MLDBM", $dbname, O_RDWR|O_CREAT, 0666) or die "error opening DB: $!";
 my %bugmap1=%data;
 my %bugmap2=%bugmap1;
+use JSON::XS; my $coder = JSON::XS->new->ascii->pretty->allow_nonref->allow_blessed->convert_blessed;
 
 sub diag(@) #{print @_,"\n"}
 {}
@@ -32,6 +34,25 @@ sub get_requests($)
 	return $xml;
 }
 
+sub get_commits($)
+{
+my $filename = 'file.txt';
+my $json_text = do {
+	open(my $json_fh, "<:encoding(UTF-8)", $filename)
+		or die("Can't open \$filename\": $!\n");
+	local $/;
+	<$json_fh>
+};
+my $json = JSON->new;
+my $commits = $json->decode($json_text);
+for ( @{$commits->{bsc}} ) {
+	   print $_->{commit}."\n";
+   }
+
+	close $json_fh;
+	return $commits;
+}
+
 my $requests=get_requests($obssupport::namespace);
 #die length($requests);
 if(!$requests || $requests!~m{<collection matches=}) {
@@ -40,7 +61,6 @@ if(!$requests || $requests!~m{<collection matches=}) {
 } # opensuse site failed
 my $reqdata=XMLin($requests, ForceArray=>['request','action','history'], keyattr=>['id']);
 $requests=$reqdata->{request};
-use JSON::XS; my $coder = JSON::XS->new->ascii->pretty->allow_nonref->allow_blessed->convert_blessed;
 #print $coder->encode($reqdata);
 foreach my $sr (sort keys %$requests) {
 	my $data=$requests->{$sr};
@@ -85,7 +105,28 @@ foreach my $sr (sort keys %$requests) {
 		addentry(\%bugmap2, $mention, $sr);
 		addsrinfo($sr, $targetdistri, $package);
 	}
+
 }
+my $commits=get_commits($gitsupport::namespace);
+foreach my $commit (sort keys %$commits) {
+	my $gitdata=$commits->{$commit};
+	my ($sha, $branch, $bsc);
+	foreach my $comm (@{$commits->{commit}}) {
+		my $b=$comm->{branch};
+		my $s=$comm->{sha};
+		my $bug=$comm->{bsc};
+	}
+	my $descr=$commits->{bsc}||"";
+	$branch=join("+", keys %$branch);
+       	$commit=join("+", keys %$commit);
+	foreach my $mention ($descr) {
+		$mention=~s/boo#(\d{6,7}\b)/bnc#$1/;
+		$mention=~s/bsc#(\d{6,7}\b)/bnc#$1/;
+		$mention=~s/bug#(\d{6,7}\b)/bnc#$1/;
+		print "$commit ($branch / $bsc) mention $mention\n";
+	}
+		
+
 
 # check which entries were new
 foreach my $bugid (sort(keys(%bugmap2))) {
