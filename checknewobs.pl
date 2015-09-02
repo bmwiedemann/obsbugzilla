@@ -39,7 +39,7 @@ sub get_commits($)
 my $filename = 'file.txt';
 my $json_text = do {
 	open(my $json_fh, "<:encoding(UTF-8)", $filename)
-		or die("Can't open \$filename\": $!\n");
+		or die("Can't open $filename\": $!\n");
 	local $/;
 	<$json_fh>
 };
@@ -49,7 +49,6 @@ for ( @{$commits->{bsc}} ) {
 	   print $_->{commit}."\n";
    }
 
-	close $json_fh;
 	return $commits;
 }
 
@@ -125,6 +124,7 @@ foreach my $commit (sort keys %$commits) {
 		$mention=~s/bug#(\d{6,7}\b)/bnc#$1/;
 		print "$commit ($branch / $bsc) mention $mention\n";
 	}
+}
 		
 
 

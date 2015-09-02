@@ -7,7 +7,7 @@ our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
 $VERSION = "1.0";
 @ISA = qw(Exporter);
 @EXPORT = qw(
-&addentry &diffhash &addgitinfo &addgitlinks
+&addgitinfo &addgitlinks
 );
 
 our %gitinfo=();
@@ -47,18 +47,13 @@ our $privatecomment=0;
 our $bugzillahandle;
 our $coder = JSON::XS->new->ascii->pretty->allow_nonref->allow_blessed->convert_blessed;
 eval(`/bin/cat $ENV{HOME}/.bugzillarc`);
-our $gitserver="git.suse.com/cgit/kernel-source/commit/"
+our $gitserver="git.suse.com/cgit/kernel-source/commit/";
 
 sub bugzillahandle()
 {
 	#$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.novell.com/tr_xmlrpc.cgi") if(!$bugzillahandle);
 	$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.novell.com/xmlrpc.cgi") if(!$bugzillahandle);
 	return $bugzillahandle;
-}
-
-sub SOAP::Transport::HTTP::Client::get_basic_credentials 
-{ 
-	return $username => $password;
 }
 
 sub die_on_fault 
@@ -72,7 +67,7 @@ sub die_on_fault
 sub getbug($)
 { my($bugid)=@_;
 	my $proxy=bugzillahandle();
-	$soapresult;
+	my $soapresult;
 	eval {$soapresult = $proxy->call('Bug.comments', {ids=>[$bugid]});};
 	$soapresult ||= {_content=>[0,1,2,3,"failed $@"]};
 }
@@ -94,7 +89,7 @@ sub filtercommit($@)
 
 sub giturl(@)
 {
-	return join("",map {"https://$gitserver/cgit/kernel-source/committ/$_\n"} @_);
+	return join("",map {"https://$gitserver/cgit/kernel-source/commit/$_\n"} @_);
 }
 
 sub giturlplusinfo(@)
