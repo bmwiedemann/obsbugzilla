@@ -8,6 +8,7 @@ use LWP::Simple;
 use XML::Simple;
 use MLDBM qw(DB_File Storable);
 use Fcntl;
+use config;
 use obssupport;
 my %data;
 my $dbname="issuemention.dbm";
@@ -23,7 +24,7 @@ sub get_requests($)
 	my $ns=shift;
 	my @a=gmtime(time-24*60*60); $a[4]++; $a[5]+=1900;
 	my $since=sprintf("%04i-%02i-%02i",$a[5],$a[4],$a[3]);
-	open(my $f, "-|", qq!osc -A https://$obssupport::apiserver api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
+	open(my $f, "-|", qq!osc -A https://$config::apiserver api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
 	#open(my $f, "-|", qq!osc api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review')+and+state/\@when>='$since'"!) or die $!;
 	#open(my $f, "<", "request.new.xml") or die $!;
 	local $/;
@@ -32,7 +33,7 @@ sub get_requests($)
 	return $xml;
 }
 
-my $requests=get_requests($obssupport::namespace);
+my $requests=get_requests($config::namespace);
 #die length($requests);
 if(!$requests || $requests!~m{<collection matches=}) {
 	system('echo "OBS SR source failed" | mailx -s OBS bwiedemann@suse.de');
@@ -51,7 +52,7 @@ foreach my $sr (sort keys %$requests) {
 		next unless $a->{target};
 		next unless $a->{type} =~ m/submit|maintenance_incident/;
 		my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
-		next unless $p && $p=~m/^$obssupport::namespace(.*)/;
+		next unless $p && $p=~m/^$config::namespace(.*)/;
 		my $targetdistri1=$1;
 		$targetdistri1=~s/:Update$//;
 		$p=$a->{target}->{package} || $a->{source}->{package};
