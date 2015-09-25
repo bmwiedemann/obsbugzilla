@@ -22,8 +22,10 @@ sub diag(@) #{print @_,"\n"}
 
 my $mentions = source::OBS::fetch();
 foreach my $mention (keys %$mentions) {
-    foreach my $e (@{$mentions->{$mention}}) {
-        my ($sr, $targetdistri, $package) = ($e->{sr}, $e->{distri}, $e->{package});
+    my $e1 = $mentions->{$mention};
+    foreach my $id (keys %$e1) {
+        my $e = $e1->{$id};
+        my ($sr, $targetdistri, $package) = ($id, $e->{distri}, $e->{package});
         #print "$sr ($targetdistri / $package) mention: $mention\n";
         addentry(\%bugmap2, $mention, $sr);
         addsrinfo($sr, $targetdistri, $package);
