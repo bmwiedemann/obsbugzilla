@@ -3,6 +3,7 @@ package config;
 our ($username,$password);
 our $apiserver="api.opensuse.org";
 our $namespace="openSUSE:";
+our $bsname="OBS";
 our $privatecomment=0;
 eval(`/bin/cat $ENV{HOME}/.bugzillarc`);
 if(!$username || !$password) {
