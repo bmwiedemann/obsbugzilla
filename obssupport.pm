@@ -21,17 +21,6 @@ sub addentry($$$)
 	$bugmap->{$bugid}=\%h;
 }
 
-# h1 is assumed to always contain more entries than h2
-sub diffhash($$)
-{ my($h1,$h2)=@_;
-	my @a;
-	foreach my $x (sort(keys(%$h1))) {
-		next if($h2->{$x});
-		push(@a,$x)
-	}
-	return \@a;
-}
-
 sub addsrinfo($$)
 { my($sr,$extra)=@_;
 	$srinfo{$sr}=$extra;

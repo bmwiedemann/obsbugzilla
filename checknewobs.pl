@@ -9,6 +9,7 @@ use XML::Simple;
 use MLDBM qw(DB_File Storable);
 use Fcntl;
 use config;
+use common;
 use obssupport;
 use source::OBS;
 my %data;
@@ -34,7 +35,7 @@ foreach my $mention (keys %$mentions) {
 
 # check which entries were new
 foreach my $bugid (sort(keys(%bugmap2))) {
-	my $diff=diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
+	my $diff=common::diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
 	if($diff && @$diff) {
 #		my $msg="> https://bugzilla.suse.com/show_bug.cgi?id=$bugid\nThis bug ($bugid) was mentioned in\n".
 #		join("", map {"https://build.opensuse.org/request/show/$_\n"} @$diff)."\n";
