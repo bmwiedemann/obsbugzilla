@@ -32,9 +32,9 @@ sub diffhash($$)
 	return \@a;
 }
 
-sub addsrinfo($$$)
-{ my($sr,$distri,$package)=@_;
-	$srinfo{$sr}={distri=>$distri, package=>$package};
+sub addsrinfo($$)
+{ my($sr,$extra)=@_;
+	$srinfo{$sr}=$extra;
 }
 
 use SOAP::Transport::HTTP;  # Need for Basic Authorization subroutine
@@ -97,7 +97,7 @@ sub srurlplusinfo(@)
 	return join("",map {
 		my $sr=$_;
 		my $info="";
-		if(my $i=$srinfo{$sr}) {$info=" $i->{distri} / $i->{package}"}
+		if(my $i=$srinfo{$sr}) {$info=" $i"}
 		srurl($sr.$info);
 	 } @_);
 }

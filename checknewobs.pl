@@ -25,10 +25,10 @@ foreach my $mention (keys %$mentions) {
     my $e1 = $mentions->{$mention};
     foreach my $id (keys %$e1) {
         my $e = $e1->{$id};
-        my ($sr, $targetdistri, $package) = ($id, $e->{distri}, $e->{package});
-        #print "$sr ($targetdistri / $package) mention: $mention\n";
+        my ($sr, $extra) = ($id, $e->{extra});
+        #print "$sr ($extra) mention: $mention\n";
         addentry(\%bugmap2, $mention, $sr);
-        addsrinfo($sr, $targetdistri, $package);
+        addsrinfo($sr, $extra);
     }
 }
 
