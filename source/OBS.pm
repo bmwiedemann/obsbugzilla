@@ -47,6 +47,7 @@ sub fetch()
             next if $p eq "patchinfo";
             $p=~s/_NonFree_Update//;
             $p=~s/\.openSUSE_\d\d\.\d(_Update)?//;
+            $p=~s/\.openSUSE_Leap_\d\d\.\d(_Update)?//;
             $p=~s/\.SUSE_SLE-\d\d(-SP\d)?_Update//;
             $targetdistri->{$targetdistri1}=1;
             $package->{$p}=1;
