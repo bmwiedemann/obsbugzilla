@@ -16,6 +16,9 @@ Once configs are in place, configure via crontab -e
 0 * * * * cd ~/obsbugzilla && ./checknewobs.pl
 
 
+How it works:
+The script queries OBS for SRs of the last 24 hours, looks into the commit message (but not the .changes file) for bnc# mentions and updates bugzilla using the XML-RPC API.
+
 Implementation details:
 The script maintains an issuemention.dbm file about mentions that were already processed in order to avoid duplicates in bugzilla, even when it misbehaves.
 
