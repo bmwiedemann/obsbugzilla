@@ -65,8 +65,8 @@ sub fetch()
             }
             next;
         }
-        $targetdistri=join("+", keys %$targetdistri);
-        $package=join("+", keys %$package);
+        $targetdistri=join("+", sort keys %$targetdistri);
+        $package=join("+", sort keys %$package);
         foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
             $mention=~s/boo#(\d{6,7}\b)/bnc#$1/; #bugzilla.opensuse.org
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
