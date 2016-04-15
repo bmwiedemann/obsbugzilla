@@ -11,6 +11,7 @@ sub get_requests($)
     open(my $f, "-|", qq!osc -A https://$config::apiserver api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
     local $/;
     my $xml=<$f>;
+    if(length($xml)>30000000) { die "reply too long(".length($xml).") - not sane - stopping here"}
     close $f;
     return $xml;
 }
