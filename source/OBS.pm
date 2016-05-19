@@ -31,6 +31,7 @@ sub fetch()
     my $reqdata=XMLin($requests, ForceArray=>['request','action','history'], keyattr=>['id']);
     $requests=$reqdata->{request};
     my $results={};
+    my $time = time();
     foreach my $sr (sort keys %$requests) {
         my $data=$requests->{$sr};
         my ($type,$targetdistri, $package);
@@ -44,6 +45,7 @@ sub fetch()
             my $targetdistri1=$1;
             $targetdistri1=~s/:(Update|Test|GA)\b//;
             $targetdistri1=~s/Leap://;
+            next if $targetdistri1 eq "42.2" and $time < 1464998400; # temp during devel
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
             next if $p eq "patchinfo";
