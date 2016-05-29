@@ -4,8 +4,6 @@ use strict;
 # zypper in perl-SOAP-Lite perl-LWP-Protocol-https
 # usage: ./checknewobs.pl
 
-use LWP::Simple;
-use XML::Simple;
 use MLDBM qw(DB_File Storable);
 use Fcntl;
 use config;
