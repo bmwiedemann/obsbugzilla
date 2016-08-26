@@ -34,8 +34,7 @@ use config;
 my $bugzillahandle;
 sub bugzillahandle()
 {
-	#$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.novell.com/tr_xmlrpc.cgi") if(!$bugzillahandle);
-	$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.novell.com/xmlrpc.cgi") if(!$bugzillahandle);
+	$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
 	return $bugzillahandle;
 }
 
