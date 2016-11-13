@@ -6,7 +6,7 @@ use common;
 sub get_requests($)
 {
     my $ns=shift;
-    my @a=gmtime(time-24*60*60); $a[4]++; $a[5]+=1900;
+    my @a=gmtime(time-1*24*60*60); $a[4]++; $a[5]+=1900;
     my $since=sprintf("%04i-%02i-%02i",$a[5],$a[4],$a[3]);
     open(my $f, "-|", qq!osc -A https://$config::apiserver api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
     local $/;
