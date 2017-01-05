@@ -45,7 +45,7 @@ sub getsrmentions($)
             my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
             next unless $p && $p=~m/^$config::namespace(.*)/;
             my $targetdistri1=$1;
-            $targetdistri1=~s/:(Update|Test|GA)\b//;
+            $targetdistri1=~s/:(Update|Products|Test|GA)\b//g;
             $targetdistri1=~s/Leap://;
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
