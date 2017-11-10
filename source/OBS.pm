@@ -71,7 +71,7 @@ sub fetch()
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
             #print "$sr ($targetdistri / $package) mention: $mention\n";
-            common::addmapentry($results, $mention, $sr, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package"});
+            common::addmapentry($results, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention});
         }
     }
     return $results;

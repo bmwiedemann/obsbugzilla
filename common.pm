@@ -1,7 +1,9 @@
 package common;
 
-sub addmapentry($$$$)
-{my($bugmap, $mention, $id, $data)=@_;
+sub addmapentry($$)
+{my($bugmap, $data)=@_;
+	my $id=$data->{id};
+	my $mention=$data->{mention};
 	my $h=$bugmap->{$mention}||{};
 	my %h=%$h; # deep copy to allow diffhash to work
 	$h{$id}=$data;
