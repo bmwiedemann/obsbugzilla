@@ -1,7 +1,18 @@
 package source::OBS;
+use Time::Local;
 use config;
 use XML::Simple;
 use common;
+
+sub parseisotime($)
+{
+    my $in=shift;
+    return unless $in;
+    return unless $in=~/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})$/;
+    my ($year, $month, $day, $h, $m, $s) = ($1,$2,$3,$4,$5,$6);
+    $month--;
+    return timegm($s, $m, $h, $day, $month, $year);
+}
 
 sub get_requests($)
 {
@@ -58,6 +69,7 @@ sub getsrmentions($)
             }
             return [];
         }
+        my $when = parseisotime($data->{when}) || time();
         $targetdistri=join("+", sort keys %$targetdistri);
         $package=join("+", sort keys %$package);
         foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
@@ -65,7 +77,7 @@ sub getsrmentions($)
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
             #print "$sr ($targetdistri / $package) mention: $mention\n";
-            push(@mentions, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention});
+            push(@mentions, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention, time=>$when});
         }
     return \@mentions;
 }
@@ -84,6 +96,7 @@ sub fetch()
         my $data=$requests->{$sr};
         next if !$data->{state};
         $data->{state} = $data->{state}{name}; # make similar to rabbitmq
+        $data->{when} = $data->{state}{when};
         $data->{number} = $sr;
         my $srmentions=getsrmentions($data);
         foreach my $m (@$srmentions) {
