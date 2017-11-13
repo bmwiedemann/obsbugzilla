@@ -13,6 +13,7 @@ sub get_requests($)
     my $xml=<$f>;
     if(length($xml)>30000000) { die "reply too long(".length($xml).") - not sane - stopping here"}
     close $f;
+	 open($f, ">", "$ENV{HOME}/.osc.debug.xml"); print $f $xml; close $f;
     return $xml;
 }
 
