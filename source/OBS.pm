@@ -34,7 +34,10 @@ sub getsrmentions($)
     my $sr=$data->{number};
     my @mentions=();
         # reduce spamminess by skipping requests that are no more interesting
-        return [] if !$data->{state} || $data->{state} =~ m/deleted|revoked|superseded/;
+        if(!$data->{state} || $data->{state} =~ m/deleted|revoked|superseded/) {
+            for(<queue/*/$sr>) {unlink $_}
+            return [];
+        }
         my ($type, $targetdistri, $package);
         foreach my $a (@{$data->{action}}) {
             next unless $a->{target};
