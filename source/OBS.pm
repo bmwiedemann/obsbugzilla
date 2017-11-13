@@ -21,21 +21,14 @@ sub srurl(@)
     return join("",map {"https://$config::buildserver/request/show/$_\n"} @_);
 }
 
-sub fetch()
+sub getsrmentions($)
 {
-    my $requests=get_requests($config::namespace);
-    if(!$requests || $requests!~m{<collection matches=}) {
-        system('echo "OBS SR source failed" | mailx -s OBS bwiedemann@suse.de');
-        print "OBS api failed\n" ; exit 17
-    }
-    my $reqdata=XMLin($requests, ForceArray=>['request','action','history'], keyattr=>['id']);
-    $requests=$reqdata->{request};
-    my $results={};
-    foreach my $sr (sort keys %$requests) {
-        my $data=$requests->{$sr};
-        my ($type,$targetdistri, $package);
+    my $data=shift;
+    my $sr=$data->{number};
+    my @mentions=();
         # reduce spamminess by skipping requests that are no more interesting
-        next if !$data->{state} || $data->{state}{name} =~ m/deleted|revoked|superseded/;
+        return [] if !$data->{state} || $data->{state} =~ m/deleted|revoked|superseded/;
+        my ($type, $targetdistri, $package);
         foreach my $a (@{$data->{action}}) {
             next unless $a->{target};
             next unless $a->{type} =~ m/submit|maintenance_incident/;
@@ -56,13 +49,13 @@ sub fetch()
             $type=$a->{type};
             #print "$sr: $type @$targetdistri / $package\n";
         }
-        next unless $type;
+        return [] unless $type;
         my $descr=$data->{description}||"";
         if($type eq "delete") {
             if($descr=~m/openSUSE:Factory/) {
                 #print "SR:$sr $type $descr";
             }
-            next;
+            return [];
         }
         $targetdistri=join("+", sort keys %$targetdistri);
         $package=join("+", sort keys %$package);
@@ -71,7 +64,29 @@ sub fetch()
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
             #print "$sr ($targetdistri / $package) mention: $mention\n";
-            common::addmapentry($results, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention});
+            push(@mentions, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention});
+        }
+    return \@mentions;
+}
+
+sub fetch()
+{
+    my $requests=get_requests($config::namespace);
+    if(!$requests || $requests!~m{<collection matches=}) {
+        system('echo "OBS SR source failed" | mailx -s OBS bwiedemann@suse.de');
+        print "OBS api failed\n" ; exit 17
+    }
+    my $reqdata=XMLin($requests, ForceArray=>['request','action','history'], keyattr=>['id']);
+    $requests=$reqdata->{request};
+    my $results={};
+    foreach my $sr (sort keys %$requests) {
+        my $data=$requests->{$sr};
+        next if !$data->{state};
+        $data->{state} = $data->{state}{name}; # make similar to rabbitmq
+        $data->{number} = $sr;
+        my $srmentions=getsrmentions($data);
+        foreach my $m (@$srmentions) {
+            common::addmapentry($results, $m);
         }
     }
     return $results;
