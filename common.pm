@@ -1,8 +1,25 @@
 package common;
+use JSON::XS;
+
+our $minage=30*60;
 
 sub srurl(@)
 {
 	return join("",map {"https://$config::buildserver/request/show/$_"} @_);
+}
+
+sub get_file_content($) {my($fn)=@_;;
+
+   open(FCONTENT, "<", $fn) or return undef;
+   local $/;
+   my $result=<FCONTENT>;
+   close(FCONTENT);
+   return $result;
+}
+sub set_file_content($$) {my($fn,$data)=@_;
+   open(my $fc, ">", $fn) or return undef;
+   print $fc $data;
+   close($fc);
 }
 
 sub addmapentry($$)
@@ -13,6 +30,32 @@ sub addmapentry($$)
 	my %h=%$h; # deep copy to allow diffhash to work
 	$h{$id}=$data;
 	$bugmap->{$mention}=\%h;
+}
+
+my $jsoncoder = JSON::XS->new->pretty->canonical;
+
+sub enqueue($)
+{my($mention)=shift;
+	my $mentionid=$mention->{mention};
+	my $srcid=$mention->{id};
+	mkdir "queue";
+	mkdir "queue/$mentionid";
+	set_file_content("queue/$mentionid/$srcid", $jsoncoder->encode($mention));
+}
+
+sub getcumulatedqueue()
+{
+	my %result;
+	for my $mentiondir (<queue/*>) {
+		my $mtime = (stat($mentiondir))[9];
+		next if $mtime > time - $minage;
+		for my $srfile (<$mentiondir/*>) {
+			my $json = get_file_content($srfile) or die "$srfile: $!";
+			my $data = $jsoncoder->decode($json) or die "invalid JSON in $srfile";
+			$result{$data->{mention}}->{$data->{id}} = $data;
+		}
+	}
+	return \%result;
 }
 
 # returns an arrayref of keys that are in h1, but not h2

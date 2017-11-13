@@ -13,7 +13,10 @@ To use this tool with bnc's XMLRPC,
 you need an account with the corporate flag set
 
 Once configs are in place, configure via crontab -e
-0 * * * * cd ~/obsbugzilla && ./checknewobs.pl
+0 * * * * cd ~/obsbugzilla && ./sourceobs.pl # fallback if something goes wrong with rabbitmq
+*/10 * * * * cd ~/obsbugzilla && ./sink.pl
+
+and run ./sourcerabbit.pl as a permanent source process
 
 
 How it works:
@@ -21,4 +24,7 @@ The script queries OBS for SRs of the last 24 hours, looks into the commit messa
 
 Implementation details:
 The script maintains an issuemention.dbm file about mentions that were already processed in order to avoid duplicates in bugzilla, even when it misbehaves.
+
+Data is collected by code in source/*.pm and relevant entries are written to a pending queue dir by the various sources. E.g. queue/bnc#1234567/sr543210
+A sink process picks up entries from the queue when data is sufficiently aggregated (similar in spirit to TCP's Nagle algorithm) to avoid spamming bug-subscribers with emails about single SRs, but also not causing large delays in information flow. When bugzilla is down, enries remain in the queue. Updates for inaccessible bugs (usually about legal issues) have to be discarded.
 
