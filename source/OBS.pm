@@ -28,11 +28,6 @@ sub get_requests($)
     return $xml;
 }
 
-sub srurl(@)
-{
-    return join("",map {"https://$config::buildserver/request/show/$_\n"} @_);
-}
-
 sub getsrmentions($)
 {
     my $data=shift;
@@ -77,7 +72,7 @@ sub getsrmentions($)
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
             #print "$sr ($targetdistri / $package) mention: $mention\n";
-            push(@mentions, {id=>$sr, url=>srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention, time=>$when});
+            push(@mentions, {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention, time=>$when});
         }
     return \@mentions;
 }

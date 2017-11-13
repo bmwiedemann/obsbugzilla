@@ -1,5 +1,10 @@
 package common;
 
+sub srurl(@)
+{
+	return join("",map {"https://$config::buildserver/request/show/$_"} @_);
+}
+
 sub addmapentry($$)
 {my($bugmap, $data)=@_;
 	my $id=$data->{id};

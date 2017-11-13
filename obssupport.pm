@@ -86,18 +86,13 @@ sub filtersr($@)
 	return @sr2;
 }
 
-sub srurl(@)
-{
-	return join("",map {"https://$config::buildserver/request/show/$_\n"} @_);
-}
-
 sub srurlplusinfo(@)
 {
 	return join("",map {
 		my $sr=$_;
 		my $info="";
 		if(my $i=$srinfo{$sr}) {$info=" $i"}
-		srurl($sr.$info);
+		common::srurl($sr.$info)."\n";
 	 } @_);
 }
 
