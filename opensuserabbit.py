@@ -14,6 +14,7 @@ result = channel.queue_declare(exclusive=True)
 queue_name = result.method.queue
 
 channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key='opensuse.obs.request.create')
+channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key='opensuse.obs.request.state_change')
 
 #print(' [*] Waiting for logs. To exit press CTRL+C')
 
