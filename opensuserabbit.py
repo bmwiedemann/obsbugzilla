@@ -4,6 +4,8 @@ import sys
 
 # or amqps://suse:suse@rabbit.suse.de
 url = "amqps://opensuse:opensuse@rabbit.opensuse.org"
+if len(sys.argv) >= 2:
+    url = sys.argv[1]
 connection = pika.BlockingConnection(pika.URLParameters(url))
 channel = connection.channel()
 

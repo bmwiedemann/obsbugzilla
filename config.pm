@@ -5,6 +5,7 @@ our $apiserver="api.opensuse.org";
 our $namespace="openSUSE:";
 our $bsname="OBS";
 our $privatecomment=0;
+our $rabbiturl='amqps://opensuse:opensuse@rabbit.opensuse.org';
 eval(`/bin/cat $ENV{HOME}/.bugzillarc`);
 if(!$username || !$password) {
     die "need username and password specified in .bugzillarc";
