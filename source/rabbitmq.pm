@@ -22,7 +22,7 @@ sub fetchone()
 
 sub init()
 {
-    my $sourceprog="./opensuserabbit.py $config::rabbiturl";
+    my $sourceprog="./opensuserabbit.py $config::rabbiturl $config::rabbitroutingprefix";
     if($ENV{RABBITTEST}) {$sourceprog="cat"}
     open(RABBITPIPE, "$sourceprog|") or die $!;
 }
