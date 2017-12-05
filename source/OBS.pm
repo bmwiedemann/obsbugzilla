@@ -77,6 +77,8 @@ sub getsrmentions($)
             my $targetdistri1=$1;
             $targetdistri1=~s/:(Update|Products|Test|GA)\b//g;
             $targetdistri1=~s/Leap://;
+            next if $targetdistri1 eq "15.2" and time() < 1580511600; # temp during devel
+            next if $targetdistri1 eq "15.1" and time() < 1548979200; # temp during devel
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
             next if $p =~ /^patchinfo/;
