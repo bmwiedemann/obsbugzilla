@@ -7,7 +7,7 @@ $password="xxx";
 $namespace="openSUSE:";
 
 INSTALL:
-  zypper in perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS osc
+  zypper in perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS perl-LWP-Protocol-https perl-MLDBM python-pika osc
 
 To use this tool with bnc's XMLRPC,
 you need an account with the corporate flag set
