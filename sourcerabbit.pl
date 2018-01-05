@@ -12,6 +12,7 @@ use source::OBS;
 sub diag(@) {print @_,"\n"}
 #{}
 
+$|=1;
 source::rabbitmq::init();
 while(my $data=source::rabbitmq::fetchone()) {
     my $srmentions=source::OBS::getsrmentions($data);
