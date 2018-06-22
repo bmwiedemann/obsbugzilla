@@ -28,6 +28,26 @@ sub get_requests($)
     return $xml;
 }
 
+sub getsrdiffmentions($)
+{
+    my $sr=shift;
+    my $xml=`osc -A https://$config::apiserver api -X POST "/request/$sr?cmd=diff&withissues=1&view=xml"`;
+    my $extradata=XMLin($xml, ForceArray=>['action','issue','sourcediff'], keyattr=>['id']);
+    my @mentions=();
+    foreach my $a (@{$extradata->{action}}) {
+        my $sourcediff=$a->{sourcediff};
+        foreach my $s (@$sourcediff) {
+            my $issues = $s->{issues}->{issue};
+            foreach my $i (@$issues) {
+                next if $i->{tracker} ne "bnc";
+                next if $i->{state} ne "added";
+                push(@mentions, "$i->{tracker}#$i->{name}");
+            }
+        }
+    }
+    return @mentions;
+}
+
 sub getsrmentions($)
 {
     my $data=shift;
@@ -38,10 +58,11 @@ sub getsrmentions($)
             for(<queue/*/$sr>) {unlink $_}
             return [];
         }
-        my ($type, $targetdistri, $package);
+        my ($type, $targetdistri, $package, $is_mr);
         foreach my $a (@{$data->{action}}) {
             next unless $a->{target};
             next unless $a->{type} =~ m/submit|maintenance_incident/;
+            $is_mr = 1 if $a->{type} eq "maintenance_incident";
             my $p=$a->{target}->{releaseproject} || $a->{target}->{project};
             next unless $p && $p=~m/^$config::namespace(.*)/;
             my $targetdistri1=$1;
@@ -76,6 +97,13 @@ sub getsrmentions($)
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
             #print "$sr ($targetdistri / $package) mention: $mention\n";
             push(@mentions, {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention, time=>$when});
+        }
+        if($is_mr) {
+            my @m = getsrdiffmentions($sr);
+            foreach my $m (@m) {
+                $m = {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$m, time=>$when};
+                push(@mentions, $m);
+            }
         }
     return \@mentions;
 }
