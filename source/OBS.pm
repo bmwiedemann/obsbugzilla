@@ -93,8 +93,8 @@ sub fetch()
     foreach my $sr (sort keys %$requests) {
         my $data=$requests->{$sr};
         next if !$data->{state};
-        $data->{state} = $data->{state}{name}; # make similar to rabbitmq
         $data->{when} = $data->{state}{when};
+        $data->{state} = $data->{state}{name}; # make similar to rabbitmq
         $data->{number} = $sr;
         my $srmentions=getsrmentions($data);
         foreach my $m (@$srmentions) {
