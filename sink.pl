@@ -16,6 +16,7 @@ my $dbname="issuemention.dbm";
 tie(%data, "MLDBM", $dbname, O_RDWR|O_CREAT, 0666) or die "error opening DB: $!";
 my %bugmap1=%data;
 my %bugmap2=%bugmap1;
+untie(%data);
 
 sub diag(@) #{print @_,"\n"}
 {}
@@ -44,11 +45,12 @@ foreach my $bugid (sort(keys(%bugmap2))) {
 			print "OK\n";
 		} else {
 			print "failed\n";
-			$bugmap2{$bugid} = $data{$bugid}; # avoid adding it as done
+			$bugmap2{$bugid} = $bugmap1{$bugid}; # avoid adding it as done
 		}
 	}
 }
 
+tie(%data, "MLDBM", $dbname, O_RDWR|O_CREAT, 0666) or die "error opening DB: $!";
 %data=%bugmap2;
 
 untie(%data);
