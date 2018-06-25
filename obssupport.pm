@@ -77,7 +77,8 @@ sub bugjson($)
 
 sub filtersr($@)
 { my($bugjson, @sr)=@_;
-	my @sr2;
+	my @sr2=();
+	return @sr2 if($bugjson=~m/\Afailed /);
 	# drop linked SRs:
 	foreach my $sr (@sr) {
 		next if $bugjson=~m/request\/show\/$sr\b/;
