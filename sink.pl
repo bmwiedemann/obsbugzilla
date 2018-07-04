@@ -6,11 +6,13 @@ use strict;
 # uses entries from queue/ to post updates
 
 use MLDBM qw(DB_File Storable);
-use Fcntl;
+use Fcntl qw(:DEFAULT :flock);
 use lib ".";
 use config;
 use common;
 use obssupport;
+open(my $fh, '>>', ".lockfile") or die $!;
+flock($fh, LOCK_EX) or die $!;
 my %data;
 my $dbname="issuemention.dbm";
 tie(%data, "MLDBM", $dbname, O_RDWR|O_CREAT, 0666) or die "error opening DB: $!";
@@ -52,3 +54,4 @@ foreach my $bugid (sort(keys(%bugmap2))) {
 %data=%bugmap2;
 
 untie(%data);
+close($fh) or die $!;
