@@ -51,7 +51,7 @@ sub getsrmentions($)
             next unless $p;
             next if $p eq "patchinfo";
             $p=~s/_NonFree_Update//;
-            $p=~s/\.openSUSE_Backports_SLE-\d\d(-SP\d)?//;
+            $p=~s/\.openSUSE_Backports_SLE-\d\d(-SP\d)?(_Update)?//;
             $p=~s/\.openSUSE_(?:Leap_|Evergreen_)?\d\d\.\d(_Update)?//;
             $p=~s/\.SUSE_SLE-\d\d(-SP\d)?_Update//;
             $targetdistri->{$targetdistri1}=1;
