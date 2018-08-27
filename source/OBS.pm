@@ -78,10 +78,12 @@ sub getsrmentions($)
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
             next if $p =~ /^patchinfo/;
-            $p=~s/_NonFree_Update//;
-            $p=~s/\.openSUSE_Backports_SLE-\d\d(-SP\d)?(_Update)?//;
-            $p=~s/\.openSUSE_(?:Leap_|Evergreen_)?\d\d\.\d(_Update)?//;
-            $p=~s/\.SUSE_SLE-\d\d(-SP\d)?_Update//;
+            $p=~s/_Update$//;
+            $p=~s/_NonFree$//;
+            $p=~s/-SP\d$//;
+            $p=~s/\.openSUSE_Backports_SLE-\d\d//;
+            $p=~s/\.openSUSE_(?:Leap_|Evergreen_)?\d\d\.\d//;
+            $p=~s/\.SUSE_SLE-\d\d//;
             $targetdistri->{$targetdistri1}=1;
             $package->{$p}=1;
             $type=$a->{type};
