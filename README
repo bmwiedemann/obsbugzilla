@@ -1,7 +1,15 @@
 This tool updates bugzilla entries with information
 from OBS submit requests that mention bnc#
 
-For this to work you need a ~/.bugzillarc with
+Why?
+Because it helps
+* to get notified of progress of your bug
+* to find which package got which change to fix the bug
+* to find if/when the fix was done and to which codestreams it was already submitted
+
+
+Normally, Bernhard is running these scripts for everyone (one instance for OBS and another for IBS).
+For running this yourself, you need a ~/.bugzillarc with
 $username="yourbugzillaaccount";
 $password="xxx";
 $namespace="openSUSE:";
