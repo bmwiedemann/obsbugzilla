@@ -32,6 +32,10 @@ sub getsrdiffmentions($)
 {
     my $sr=shift;
     my $xml=`osc -A https://$config::apiserver api -X POST "/request/$sr?cmd=diff&withissues=1&view=xml"`;
+    if($? != 0) {
+        warn "problem with SR $sr";
+        return ();
+    }
     my $extradata=XMLin($xml, ForceArray=>['action','issue','sourcediff'], keyattr=>['id']);
     my @mentions=();
     foreach my $a (@{$extradata->{action}}) {
