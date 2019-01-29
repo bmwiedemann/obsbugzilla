@@ -22,6 +22,7 @@ my %bugmap2=%bugmap1;
 sub diag(@) #{print @_,"\n"}
 {}
 
+my @sinks = glob("sink/*.pm");
 my $mentions = common::getcumulatedqueue();
 foreach my $mention (keys %$mentions) {
     my $e1 = $mentions->{$mention};
@@ -35,18 +36,17 @@ foreach my $mention (keys %$mentions) {
 }
 
 # check which entries were new
-foreach my $bugid (sort(keys(%bugmap2))) {
-	my $diff=common::diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
+foreach our $bugid (sort(keys(%bugmap2))) {
+	our $diff=common::diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
 	if($diff && @$diff) {
-#		my $msg="> https://bugzilla.suse.com/show_bug.cgi?id=$bugid\nThis bug ($bugid) was mentioned in\n".
-#		join("", map {"https://build.opensuse.org/request/show/$_\n"} @$diff)."\n";
-#		print $msg;
-		print "$config::bsname ./bugzillaaddsr.pl $bugid @$diff\n";
-		if(addsrlinks($bugid, @$diff)) {
-			print "OK\n";
-		} else {
-			print "failed\n";
-			$bugmap2{$bugid} = $data{$bugid}; # avoid adding it as done
+		for my $sink (@sinks) {
+			my $ret = do $sink; # uses $bugid and $diff
+			if($ret) {
+				print "OK\n";
+			} else {
+				print "failed\n";
+				$bugmap2{$bugid} = $data{$bugid}; # avoid adding it as done
+			}
 		}
 	}
 }
