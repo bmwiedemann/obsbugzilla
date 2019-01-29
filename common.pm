@@ -70,4 +70,11 @@ sub diffhash($$)
 	return \@a;
 }
 
+sub getjiraprojects()
+{
+    my $file = "data/jiraproject.json";
+    my $data = decode_json(get_file_content($file) or die "$file: $!");
+    return map {$_->{key}} (@$data);
+}
+
 1;
