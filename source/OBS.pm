@@ -70,7 +70,7 @@ sub getsrmentions($)
             $targetdistri1=~s/Leap://;
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
-            next if $p eq "patchinfo";
+            next if $p =~ /^patchinfo/;
             $p=~s/_NonFree_Update//;
             $p=~s/\.openSUSE_Backports_SLE-\d\d(-SP\d)?(_Update)?//;
             $p=~s/\.openSUSE_(?:Leap_|Evergreen_)?\d\d\.\d(_Update)?//;
