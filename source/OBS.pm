@@ -100,7 +100,7 @@ sub getsrmentions($)
         my $when = parseisotime($data->{when}) || time();
         $targetdistri=join("+", sort keys %$targetdistri);
         $package=join("+", sort keys %$package);
-        my @jiramentionids=($descr=~m/\b(jsd#(?:$jiraprojectre)-\d+)/go);
+        my @jiramentionids=($descr=~m/\b(js[cd]#(?:$jiraprojectre)-\d+)/go);
         my @mentionids=@jiramentionids;
         push(@mentionids, ($descr=~m/\b(\w+#\d{3,})/g));
         foreach my $mention (@mentionids) {

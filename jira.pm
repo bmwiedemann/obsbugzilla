@@ -46,7 +46,7 @@ sub filtersr($@)
 
 sub addjirasrlinks($@)
 { my($bugid, @sr)=@_;
-        return 2 unless $bugid=~s/^jsd#//; # ignore others
+        return 2 unless $bugid=~s/^js[cd]#//; # ignore others
         my @sr2=@sr;
         if(!$debug) { @sr2=filtersr(getbug($bugid), @sr);}
         return 1 unless @sr2;
