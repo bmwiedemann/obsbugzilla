@@ -1,8 +1,11 @@
 package source::OBS;
+use strict;
 use Time::Local;
 use config;
 use XML::Simple;
 use common;
+
+our $jiraprojectre = join("|", common::getjiraprojects());
 
 sub parseisotime($)
 {
@@ -95,7 +98,10 @@ sub getsrmentions($)
         my $when = parseisotime($data->{when}) || time();
         $targetdistri=join("+", sort keys %$targetdistri);
         $package=join("+", sort keys %$package);
-        foreach my $mention ($descr=~m/\b(\w+#\d{3,})/g) {
+        my @jiramentionids=($descr=~m/\b(jsd#(?:$jiraprojectre)-\d+)/go);
+        my @mentionids=@jiramentionids;
+        push(@mentionids, ($descr=~m/\b(\w+#\d{3,})/g));
+        foreach my $mention (@mentionids) {
             $mention=~s/boo#(\d{6,7}\b)/bnc#$1/; #bugzilla.opensuse.org
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
