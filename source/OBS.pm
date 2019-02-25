@@ -43,7 +43,7 @@ sub getsrdiffmentions($)
         foreach my $s (@$sourcediff) {
             my $issues = $s->{issues}->{issue};
             foreach my $i (@$issues) {
-                next if $i->{tracker} ne "bnc";
+                next unless $i->{tracker} =~ m/bnc|jsc/;
                 next if $i->{state} ne "added";
                 push(@mentions, "$i->{tracker}#$i->{name}");
             }
