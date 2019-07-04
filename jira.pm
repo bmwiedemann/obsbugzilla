@@ -8,23 +8,23 @@ use config;
 use obssupport;
 
 my $debug=0;
-my $jiracreds = Net::Netrc->lookup('jira.suse.de');
+my $jiracreds = Net::Netrc->lookup('jira.suse.com');
 die "need jira creds in ~/.netrc" unless $jiracreds;
 my $ua = LWP::UserAgent->new;
 
 sub getbug($)
 { my $issueid=shift;
-    my $req = HTTP::Request->new(GET => "https://jira.suse.de/rest/api/2/issue/$issueid/comment");
+    my $req = HTTP::Request->new(GET => "https://jira.suse.com/rest/api/2/issue/$issueid/comment");
     $req->authorization_basic($jiracreds->login(), $jiracreds->password());
     my $data = $ua->request($req)->as_string;
     # equivalent to
-    #my $data = `curl -s -n "https://jira.suse.de/rest/api/2/issue/$issueid/comment"`;
+    #my $data = `curl -s -n "https://jira.suse.com/rest/api/2/issue/$issueid/comment"`;
     return $data;
 }
 
 sub addcomment($$)
 { my ($issueid, $comment) = @_;
-    my $req = HTTP::Request->new(POST => "https://jira.suse.de/rest/api/2/issue/$issueid/comment");
+    my $req = HTTP::Request->new(POST => "https://jira.suse.com/rest/api/2/issue/$issueid/comment");
     $req->authorization_basic($jiracreds->login(), $jiracreds->password());
     $req->header("Content-Type", "application/json");
     $req->content(encode_json({body=>$comment}));
