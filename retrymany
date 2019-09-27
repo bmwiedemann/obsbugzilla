@@ -1,0 +1,12 @@
+#!/usr/bin/perl -w
+# sometimes bugzilla has hickups and a lot of bugs get marked as done by mistake
+# so we just trigger a retry by pasting the error messages from email
+# into this script to drop them from the DB
+use strict;
+
+while(<>) {
+  if(m(error - https://bugzilla.*/show_bug\.cgi\?id=(\d+) does not have a summary)) {
+    print("redoing #$1\n");
+    system("cd ~/obsbugzilla ; ../dbm/del.pl issuemention.dbm 'bnc#'".$1);
+  }
+}
