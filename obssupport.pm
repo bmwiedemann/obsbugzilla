@@ -35,6 +35,8 @@ my $bugzillahandle;
 sub bugzillahandle()
 {
 	$bugzillahandle=XMLRPC::Lite->proxy("https://${config::username}:$config::password\@apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
+	#$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla-devel.suse.de/xmlrpc.cgi") if(!$bugzillahandle);
+	#$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
 	return $bugzillahandle;
 }
 
