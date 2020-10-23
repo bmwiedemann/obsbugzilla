@@ -31,7 +31,7 @@ use XMLRPC::Lite;           # From the SOAP::Lite Module
 use JSON::XS;
 use config;
 
-my $bugzillahandle;
+our $bugzillahandle;
 sub bugzillahandle()
 {
 	$bugzillahandle=XMLRPC::Lite->proxy("https://${config::username}:$config::password\@apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
@@ -55,13 +55,24 @@ sub die_on_fault
 
 sub getsummary($)
 { my($bugid)=@_;
+	my $result;
+	local $config::username=$config::username;
+	local $config::password=$config::password;
+	for my $trynumber (1..3) {
 	my $proxy=bugzillahandle();
 	my $soapresult;
-	my $result;
 	eval {
 		$soapresult = $proxy->call('Bug.get', {ids=>[$bugid]});
 		$result = $soapresult->{_content}->[4]->{params}->[0]->{bugs}->[0]->{summary};
 	};
+		return $result if $result;
+		sleep 5;
+		if($trynumber == 2) {
+			$config::username=$config::fallbackusername;
+			$config::password=$config::fallbackpassword;
+		}
+		$bugzillahandle=undef;
+	}
 	return $result;
 }
 sub getbug($)
