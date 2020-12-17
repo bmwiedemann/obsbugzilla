@@ -101,10 +101,6 @@ sub getsrmentions($)
         $targetdistri=join("+", sort keys %$targetdistri);
         $package=join("+", sort keys %$package);
         my @jiramentionids=($descr=~m/\b(js[cd]#(?:$jiraprojectre)-\d+)/go);
-        my @plainjiramentionids=($descr=~m/\b((?:$jiraprojectre)-\d+)/go);
-        for my $id (grep(/^SC/, @plainjiramentionids)) {
-            push(@jiramentionids, "jsc#$id");
-        }
         my @mentionids=@jiramentionids;
         push(@mentionids, ($descr=~m/\b(\w+#\d{3,})/g));
         foreach my $mention (@mentionids) {
