@@ -31,6 +31,7 @@ use JSON::XS;
 use config;
 
 our $bugzillahandle;
+our $bugzilla_used_fallback;
 sub bugzillahandle()
 {
 	$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
@@ -70,6 +71,7 @@ sub getsummary($)
 		if($trynumber == 2) {
 			$config::username=$config::fallbackusername;
 			$config::password=$config::fallbackpassword;
+			$bugzilla_used_fallback = 1;
 		}
 		$bugzillahandle=undef;
 	}
@@ -134,6 +136,10 @@ sub addsrlinks($@)
 			}
 			print "adding to https://bugzilla.suse.com/show_bug.cgi?id=$bugid\n> $summary\n$comment\n";
 			addbugcomment($bugid, $comment, $config::privatecomment);
+			if($bugzilla_used_fallback) {
+				$bugzillahandle=undef; # switch back to main account
+				$bugzilla_used_fallback = 0;
+			}
 		} else {
 			print "debug: would have added:\n$comment\n";
 		}
