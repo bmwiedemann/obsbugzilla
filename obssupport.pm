@@ -125,6 +125,7 @@ sub addbugcomment($$;$)
 	$p||=0;
 	my $soapresult2 = proxycall('Bug.add_comment', {id => $bugid, comment => $comment, is_private=>$p, private=>$p, isprivate=>$p});
 	die_on_fault($soapresult2);
+	sleep 2;
 }
 
 sub addsrlinks($@)
