@@ -1,9 +1,10 @@
-use Test::More tests => 10;
+use Test::More tests => 11;
 use lib '.';
 use extractchanges;
 
 my $s1 = "t/sample1.changes";
 my $s3 = "t/sample3.changes";
+my $s4 = "t/sample4.changes";
 is(extract_changes($s1, 123456), "Fix foo", "basic");
 is(extract_changes($s3, 100001), "Fix bar as well", "basic2");
 is(extract_changes($s3, 100002), "Also baz with a linebreak", "linebreak1");
@@ -14,3 +15,6 @@ is(extract_changes($s3, 100005), "with subentries for issues", "sub1");
 is(extract_changes($s3, 100006), "with subentries for issues", "sub2");
 is(extract_changes($s3, 100007), "with subentries for issues", "sub3");
 is(extract_changes($s3, 100008), "with subentries with multiple lines for one issue", "submulti1");
+
+# advanced level
+is(extract_changes($s4, 1046571), "Fix missing global for 32-bit version with gcc7.", "advanced1");

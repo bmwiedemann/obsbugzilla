@@ -1,0 +1,28 @@
+-------------------------------------------------------------------
+Thu Jul  8 05:20:08 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix missing global for 32-bit version with gcc7. (bsc#1046571).
+  Fix missing frame buffer cleanup - private communication from Oracle - adds file "fix_KMS_support.patch".
+
+-------------------------------------------------------------------
+Thu Jul  8 05:19:04 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Revert "vbox_hdpi_support.patch. This patch may improve things for asn@cryptomilk.org, but it breaks other systems.
+  See https://forums.opensuse.org/showthread.php/521520-VirtualBox-interface-scaling and bsc #1014694.
+
+-------------------------------------------------------------------
+Thu Jul  8 05:18:05 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fixes boo#1183329 "virtualbox 6.1.18 crashes when it runs nested VM"
+- Improve autostart security boo#1182918.
+
+-------------------------------------------------------------------
+Thu Jul  8 05:16:35 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- From virtualbox...
+  Fixes unrelated
+  Fixes CVE-2021-2264 and boo#1184542. The directory for the <user>.start files for
+    autostarting VMs is moved from /etc/vbox to /etc/vbox/autostart.d. In addition, the autostart
+    service is hardened (by Oracle).
+  Something unrelated
+
