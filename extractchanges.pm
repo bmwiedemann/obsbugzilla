@@ -6,10 +6,10 @@ sub extract_changes($$)
     my $lines = <$fd>;
     my $re = qr/\(?(boo|bsc|bnc)#$bugid\)?/;
     #print $lines;
-    if($lines =~ m/(.*)$re/) {
+    if($lines =~ m/\n\s*[+*-] ([^+*-]{1,300}?)$re/s) {
         $_ = $1;
-	s/^\s*[-+*] //;
-	s/[ (]+$//;
+	s/^\s*[+*-] //;
+	s/[\n (]+$//;
 	return $_;
     }
     return "";
