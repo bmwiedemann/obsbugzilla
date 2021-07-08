@@ -1,4 +1,4 @@
-use Test::More tests => 4;
+use Test::More tests => 10;
 use lib '.';
 use extractchanges;
 
@@ -8,4 +8,9 @@ is(extract_changes($s1, 123456), "Fix foo", "basic");
 is(extract_changes($s3, 100001), "Fix bar as well", "basic2");
 is(extract_changes($s3, 100002), "Also baz with a linebreak", "linebreak1");
 is(extract_changes($s3, 100003), "And frorp That has a whole section with three lines", "linebreak2");
-
+is(extract_changes($s3, 100004), "And carp", "trailing1");
+is(extract_changes($s3, 100004), "And carp", "trailing1");
+is(extract_changes($s3, 100005), "with subentries for issues", "sub1");
+is(extract_changes($s3, 100006), "with subentries for issues", "sub2");
+is(extract_changes($s3, 100007), "with subentries for issues", "sub3");
+is(extract_changes($s3, 100008), "with subentries with multiple lines for one issue", "submulti1");
