@@ -33,3 +33,22 @@ Thu Jul  8 05:16:35 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
     service is hardened (by Oracle).
   Something unrelated
 
+-------------------------------------------------------------------
+Mon Aug  1 13:47:05 UTC 2016 - werner@suse.de
+
+- Make clear that the files /etc/profile as well as /etc/bash.bashrc
+  may source other files as well even if the bash does not.
+  Therefore modify patch bash-4.1-bash.bashrc.dif (bsc#959755)
+
+-------------------------------------------------------------------
+Mon Sep 29 12:19:29 UTC 2014 - werner@suse.de
+
+- Add upstream patches
+  bash43-027 which fixed bsc#898604
+  bash43-026 which fixes CVE-2014-7169 and bsc#898346
+  bash43-025 which replaces bash-4.3-CVE-2014-6271.patch and
+  fixes bnc#896776
+- Remove patch bash-4.3-CVE-2014-6271.patch due patch bash43-027
+- Add patch bash-4.2-CVE-2014-7187.patch for bsc#898603, CVE-2014-7186,
+  CVE-2014-7187: bad handling of HERE documents and for loop issue
+
