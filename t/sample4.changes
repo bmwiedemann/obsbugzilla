@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jul  8 05:29:09 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix several problems with the startup scripts. The SysV form is no longer used for most packages as proper systemd
+  service files have been created. These fixes address bsc#1037291, #1043532, and #1045871.
+- Other
+
+-------------------------------------------------------------------
 Thu Jul  8 05:20:08 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
 
 - Fix missing global for 32-bit version with gcc7. (bsc#1046571).
