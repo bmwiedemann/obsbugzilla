@@ -1,0 +1,58 @@
+-------------------------------------------------------------------
+Thu Jul  8 04:36:53 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- brumpf version 3.2
+  * with preceding entries
+  * with subentries
+    with multiple lines for one issue (boo#100008)
+  * and following entries
+
+-------------------------------------------------------------------
+Thu Jul  8 04:36:11 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- brumpf version 3.2
+  * with preceding entries
+  * with subentries for issues (boo#100007)
+  * and following entries
+
+-------------------------------------------------------------------
+Thu Jul  8 04:35:49 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- brumpf version 3.1
+  * with subentries for issues (boo#100006)
+  * and following entries
+
+-------------------------------------------------------------------
+Thu Jul  8 04:35:03 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- brumpf version 3.0
+  * with subentries for issues (boo#100005)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:34:22 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- And carp (boo#100004)
+- unrelated entry
+
+-------------------------------------------------------------------
+Thu Jul  8 04:33:47 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- And frorp
+  That has a whole section
+  with three lines (boo#100003)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:33:18 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Also baz with a linebreak
+  (boo#100002)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:32:50 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix bar as well (boo#100001)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:32:07 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix foo (boo#100000)
