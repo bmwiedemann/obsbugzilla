@@ -1,4 +1,4 @@
-use Test::More tests => 16;
+use Test::More tests => 19;
 use lib '.';
 use extractchanges;
 
@@ -23,3 +23,7 @@ is(extract_changes($s4, 1014694), 'Revert "vbox_hdpi_support.patch. This patch m
 is(extract_changes($s4, 1183329), 'Fixes boo#1183329 "virtualbox 6.1.18 crashes when it runs nested VM"', "advanced4");
 is(extract_changes($s4, 896776), 'Add upstream patches bash43-027 which fixed bsc#898604 bash43-026 which fixes CVE-2014-7169 and bsc#898346 bash43-025 which replaces bash-4.3-CVE-2014-6271.patch and fixes', "advanced5");
 is(extract_changes($s4, 959755), 'Make clear that the files /etc/profile as well as /etc/bash.bashrc may source other files as well even if the bash does not. Therefore modify patch bash-4.1-bash.bashrc.dif', "bash2");
+
+is(extract_changes($s4, 1186454), 'Fix NULL dereference at probing', "kernel1");
+is(extract_changes($s4, 1187472), "Bluetooth: btqca: Don't modify firmware contents in-place", "kernel2");
+is(extract_changes($s4, 1158776), "Set CONFIG_SLAB_FREELIST_RANDOM=y on arm64 (bsc#1158776 comment 6).", "kernel3");
