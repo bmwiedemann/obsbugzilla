@@ -52,3 +52,26 @@ Mon Sep 29 12:19:29 UTC 2014 - werner@suse.de
 - Add patch bash-4.2-CVE-2014-7187.patch for bsc#898603, CVE-2014-7186,
   CVE-2014-7187: bad handling of HERE documents and for loop issue
 
+-------------------------------------------------------------------
+Thu Jul  1 15:56:49 CEST 2021 - ptesarik@suse.cz
+
+- Set CONFIG_SLAB_FREELIST_RANDOM=y on arm64 (bsc#1158776 comment 6).
+- commit 75baa7c
+
+-------------------------------------------------------------------
+Mon Jun 28 11:32:17 CEST 2021 - jslaby@suse.cz
+
+- ACPI: PM: s2idle: Add missing LPS0 functions for AMD
+  (bsc#1185840).
+- ACPI: processor idle: Fix up C-state latency if not ordered
+  (bsc#1185840).
+- Bluetooth: btqca: Don't modify firmware contents in-place
+  (bsc#1187472).
+- Input: elants_i2c - Fix NULL dereference at probing
+  (bsc#1186454).
+- mmc: sdhci-iproc: Cap min clock frequency on BCM2711
+  (bsc#1176576).
+- mmc: sdhci-iproc: Set SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN on
+  BCM2711 (bsc#1176576).
+- pinctrl: bcm2835: Accept fewer than expected IRQs (bsc#1181942).
+- Refresh
