@@ -9,6 +9,7 @@ sub extract_changes($$)
     if($lines =~ m/\n\s*[+*-] ([^+*-]{1,300}?)$re/s) {
         $_ = $1;
 	s/^\s*[+*-] //;
+	s/[\n ]+/ /g;
 	s/[\n (]+$//;
 	return $_;
     }
