@@ -4,6 +4,8 @@ use Time::Local;
 use config;
 use XML::Simple;
 use common;
+use lib '.';
+use extractchanges::extractchanges;
 
 our $jiraprojectre = join("|", common::getjiraprojects());
 
@@ -45,6 +47,7 @@ sub get_requests($)
     return $xml;
 }
 
+# returns a list of mentions: ["boo#123456", "jsc#SLE-12345"]
 sub getsrdiffmentions($)
 {
     my $sr=shift;
@@ -69,6 +72,17 @@ sub getsrdiffmentions($)
         }
     }
     return @mentions;
+}
+
+# add extra info from changes files
+sub enrichsrmention($)
+{
+    my $m = shift; # mention hashref
+    my $bugnumber = $m->{mention};
+    $bugnumber =~ s/bnc#//;
+    my $changestext = "FIXME";
+    extract_changes_from_str($changestext, $bugnumber);
+
 }
 
 sub getsrmentions($)
@@ -135,7 +149,8 @@ sub getsrmentions($)
         if($is_mr) {
             my @m = getsrdiffmentions($sr);
             foreach my $m (@m) {
-                $m = {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$m, time=>$when};
+                $m = {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$m, time=>$when, data=>$data};
+                enrichsrmention($m);
                 push(@mentions, $m);
             }
         }
