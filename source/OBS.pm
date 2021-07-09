@@ -17,12 +17,26 @@ sub parseisotime($)
     return timegm($s, $m, $h, $day, $month, $year);
 }
 
+sub api_pipe(@)
+{
+    my $pid = open(my $pipefd, "-|");
+    defined($pid)          || die "can't fork: $!";
+
+    if ($pid) {            # parent
+        return $pipefd
+    } else {               # child
+        exec("osc", "-A", "https://$config::apiserver", "api", @_)
+                           || die "can't exec program: $!";
+                           # NOTREACHED
+    }
+}
+
 sub get_requests($)
 {
     my $ns=shift;
     my @a=gmtime(time-1*24*60*60); $a[4]++; $a[5]+=1900;
     my $since=sprintf("%04i-%02i-%02i",$a[5],$a[4],$a[3]);
-    open(my $f, "-|", qq!osc -A https://$config::apiserver api "/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'"!) or die $!;
+    my $f = api_pipe(qq!/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'!);
     local $/;
     my $xml=<$f>;
     if(length($xml)>30000000) { die "reply too long(".length($xml).") - not sane - stopping here"}
