@@ -78,8 +78,8 @@ sub enrichsrmention($)
     my $m = shift; # mention hashref
     my $bugnumber = $m->{mention};
     $bugnumber =~ s/bnc#//;
-    my $changestext = "";
-    extract_changes($changestext, $bugnumber);
+    my $changestext = "FIXME";
+    extract_changes_from_str($changestext, $bugnumber);
 
 }
 
