@@ -1,5 +1,4 @@
-test fuer obsbugzilla .changes file reader
+Implementation of obsbugzilla .changes file reader
 
-soll nach bnc/bsc/boo# suchen, den Absatz schnappen
-
+It searches for bnc/bsc/boo# ID and fetches the section
 
