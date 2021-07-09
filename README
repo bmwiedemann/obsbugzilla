@@ -48,5 +48,6 @@ maintenance:
 Ocassionally, the bugzilla server will misbehave and updating a bug fails. Then use `retrymany` with the failure email message as input (copy+paste works).
 
 -- 
-test for obsbugzilla .changes file reader
-should search for bnc/bsc/boo# and grab the paragraph
+Implementation of obsbugzilla .changes file reader
+
+It searches for bnc/bsc/boo# ID and fetches the section
