@@ -1,0 +1,77 @@
+-------------------------------------------------------------------
+Thu Jul  8 05:29:09 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix several problems with the startup scripts. The SysV form is no longer used for most packages as proper systemd
+  service files have been created. These fixes address bsc#1037291, #1043532, and #1045871.
+- Other
+
+-------------------------------------------------------------------
+Thu Jul  8 05:20:08 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix missing global for 32-bit version with gcc7. (bsc#1046571).
+  Fix missing frame buffer cleanup - private communication from Oracle - adds file "fix_KMS_support.patch".
+
+-------------------------------------------------------------------
+Thu Jul  8 05:19:04 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Revert "vbox_hdpi_support.patch. This patch may improve things for asn@cryptomilk.org, but it breaks other systems.
+  See https://forums.opensuse.org/showthread.php/521520-VirtualBox-interface-scaling and bsc #1014694.
+
+-------------------------------------------------------------------
+Thu Jul  8 05:18:05 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fixes boo#1183329 "virtualbox 6.1.18 crashes when it runs nested VM"
+- Improve autostart security boo#1182918.
+
+-------------------------------------------------------------------
+Thu Jul  8 05:16:35 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- From virtualbox...
+  Fixes unrelated
+  Fixes CVE-2021-2264 and boo#1184542. The directory for the <user>.start files for
+    autostarting VMs is moved from /etc/vbox to /etc/vbox/autostart.d. In addition, the autostart
+    service is hardened (by Oracle).
+  Something unrelated
+
+-------------------------------------------------------------------
+Mon Aug  1 13:47:05 UTC 2016 - werner@suse.de
+
+- Make clear that the files /etc/profile as well as /etc/bash.bashrc
+  may source other files as well even if the bash does not.
+  Therefore modify patch bash-4.1-bash.bashrc.dif (bsc#959755)
+
+-------------------------------------------------------------------
+Mon Sep 29 12:19:29 UTC 2014 - werner@suse.de
+
+- Add upstream patches
+  bash43-027 which fixed bsc#898604
+  bash43-026 which fixes CVE-2014-7169 and bsc#898346
+  bash43-025 which replaces bash-4.3-CVE-2014-6271.patch and
+  fixes bnc#896776
+- Remove patch bash-4.3-CVE-2014-6271.patch due patch bash43-027
+- Add patch bash-4.2-CVE-2014-7187.patch for bsc#898603, CVE-2014-7186,
+  CVE-2014-7187: bad handling of HERE documents and for loop issue
+
+-------------------------------------------------------------------
+Thu Jul  1 15:56:49 CEST 2021 - ptesarik@suse.cz
+
+- Set CONFIG_SLAB_FREELIST_RANDOM=y on arm64 (bsc#1158776 comment 6).
+- commit 75baa7c
+
+-------------------------------------------------------------------
+Mon Jun 28 11:32:17 CEST 2021 - jslaby@suse.cz
+
+- ACPI: PM: s2idle: Add missing LPS0 functions for AMD
+  (bsc#1185840).
+- ACPI: processor idle: Fix up C-state latency if not ordered
+  (bsc#1185840).
+- Bluetooth: btqca: Don't modify firmware contents in-place
+  (bsc#1187472).
+- Input: elants_i2c - Fix NULL dereference at probing
+  (bsc#1186454).
+- mmc: sdhci-iproc: Cap min clock frequency on BCM2711
+  (bsc#1176576).
+- mmc: sdhci-iproc: Set SDHCI_QUIRK_CAP_CLOCK_BASE_BROKEN on
+  BCM2711 (bsc#1176576).
+- pinctrl: bcm2835: Accept fewer than expected IRQs (bsc#1181942).
+- Refresh

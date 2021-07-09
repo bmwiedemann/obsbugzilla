@@ -1,0 +1,28 @@
+-------------------------------------------------------------------
+Thu Jul  8 04:34:22 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- And carp (boo#100004)
+- unrelated entry
+
+-------------------------------------------------------------------
+Thu Jul  8 04:33:47 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- And frorp
+  That has a whole section
+  with three lines (boo#100003)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:33:18 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Also baz with a linebreak
+  (boo#100002)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:32:50 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix bar as well (boo#100001)
+
+-------------------------------------------------------------------
+Thu Jul  8 04:32:07 UTC 2021 - Bernhard Wiedemann <bwiedemann@suse.com>
+
+- Fix foo (boo#123456)
