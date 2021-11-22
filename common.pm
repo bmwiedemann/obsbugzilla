@@ -1,5 +1,6 @@
 package common;
 use JSON::XS;
+use open qw( :std :encoding(UTF-8) );
 
 our $minage=30*60;
 

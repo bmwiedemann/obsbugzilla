@@ -51,6 +51,7 @@ sub get_requests($)
 sub getsrdiffmentions($)
 {
     my $sr=shift;
+    return () if $sr <= 237365;
     my $xml=`osc -A https://$config::apiserver api -X POST "/request/$sr?cmd=diff&withissues=1&view=xml"`;
     $xml//=""; chomp($xml);
     if(length($xml)>30000000) { warn "SR $sr reply too long(".length($xml).") - not sane - skipping..."; return () }
@@ -80,8 +81,8 @@ sub enrichsrmention($)
     my $m = shift; # mention hashref
     my $bugnumber = $m->{mention};
     $bugnumber =~ s/bnc#//;
-    my $changestext = "FIXME";
-    extract_changes_from_str($changestext, $bugnumber);
+    my $changestext = "";
+	    #extract_changes($changestext, $bugnumber);
 
 }
 
@@ -143,6 +144,7 @@ sub getsrmentions($)
         my @jiramentionids=($descr=~m/\b(js[cd]#(?:$jiraprojectre)-\d+)/go);
         my @mentionids=@jiramentionids;
         push(@mentionids, ($descr=~m/\b(\w+#\d{3,})/g));
+        push(@mentionids, ($descr=~m/\b(CVE-20[1-4]\d-\d{4,})\b/g));
         foreach my $mention (@mentionids) {
             $mention=~s/boo#(\d{6,7}\b)/bnc#$1/; #bugzilla.opensuse.org
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
@@ -150,7 +152,7 @@ sub getsrmentions($)
             #print "$sr ($targetdistri / $package) mention: $mention\n";
             push(@mentions, {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$mention, time=>$when});
         }
-        if($is_mr) {
+        if(1 || $is_mr) {
             my @m = getsrdiffmentions($sr);
             foreach my $m (@m) {
                 $m = {id=>$sr, url=>common::srurl($sr), distri=>$targetdistri, extra=>"$targetdistri / $package", mention=>$m, time=>$when, data=>$data};
