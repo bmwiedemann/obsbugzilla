@@ -48,7 +48,7 @@ sub getcumulatedqueue()
 	my %result;
 	for my $mentiondir (<queue/*>) {
 		my $mtime = (stat($mentiondir))[9];
-		next if $mtime > time - $minage;
+		next if not defined $mtime or $mtime > time - $minage;
 		for my $srfile (<$mentiondir/*>) {
 			my $json = get_file_content($srfile) or die "$srfile: $!";
 			my $data = $jsoncoder->decode($json) or die "invalid JSON in $srfile";
