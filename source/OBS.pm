@@ -99,7 +99,11 @@ sub getsrmentions($)
         }
         my $when = parseisotime($data->{when}) || time();
         $targetdistri=join("+", sort keys %$targetdistri);
-        $package=join("+", sort keys %$package);
+        if(scalar(keys %$package) > 50) {
+            $package="[".(scalar(keys %$package))." packages]";
+        } else {
+            $package=join("+", sort keys %$package);
+        }
         my @jiramentionids=($descr=~m/\b(js[cd]#(?:$jiraprojectre)-\d+)/go);
         my @mentionids=@jiramentionids;
         push(@mentionids, ($descr=~m/\b(\w+#\d{3,})/g));
