@@ -1,4 +1,4 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 import pika
 import sys
 
@@ -12,10 +12,10 @@ if len(sys.argv) >= 3:
 connection = pika.BlockingConnection(pika.URLParameters(url))
 channel = connection.channel()
 
-channel.exchange_declare(exchange='pubsub', type='topic',
+channel.exchange_declare(exchange='pubsub',
                          passive=True, durable=True)
 
-result = channel.queue_declare(exclusive=True)
+result = channel.queue_declare("", exclusive=True)
 queue_name = result.method.queue
 
 channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key=prefix+'.obs.request.create')
@@ -30,10 +30,10 @@ channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key=prefix+'.obs.
 # opensuse.obs.package.commit ... "requestid":"539138"}
 def callback(ch, method, properties, body):
     #if method.routing_key == "opensuse.obs.request.create":
+        body=body.decode("utf-8", "ignore")
         print(body)
 
-channel.basic_consume(callback,
-                      queue=queue_name,
-                      no_ack=True)
+channel.basic_consume(queue_name, callback,
+                      auto_ack=True)
 
 channel.start_consuming()
