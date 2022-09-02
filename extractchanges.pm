@@ -15,6 +15,7 @@ sub extract_changes_from_str($$)
 
 sub extract_changes($$)
 { my ($file, $bugid) = @_;
+return "";
     open(my $fd, "<", $file) or die $!;
     local $/ = undef;
     my $lines = <$fd>;

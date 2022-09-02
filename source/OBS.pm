@@ -41,7 +41,7 @@ sub get_requests($)
     my $f = api_pipe(qq!/search/request?match=starts-with(action/target/\@project,'$ns')+and+(state/\@name='new'+or+state/\@name='review'+or+state/\@name='accepted')+and+state/\@when>='$since'!);
     local $/;
     my $xml=<$f>;
-    if(length($xml)>30000000) { die "reply too long(".length($xml).") - not sane - stopping here"}
+    if(length($xml)>70000000) { die "reply too long(".length($xml).") - not sane - stopping here"}
     close $f;
 	 open($f, ">", "$ENV{HOME}/.osc.debug.xml"); print $f $xml; close $f;
     return $xml;
@@ -55,7 +55,7 @@ sub getsrdiffmentions($)
     $xml//=""; chomp($xml);
     if(length($xml)>30000000) { warn "SR $sr reply too long(".length($xml).") - not sane - skipping..."; return () }
     if($? != 0) {
-        warn "problem with SR $sr";
+        warn "problem with SR $sr: $xml";
         return ();
     }
     my $extradata=XMLin($xml, ForceArray=>['action','issue','sourcediff'], keyattr=>['id']);
