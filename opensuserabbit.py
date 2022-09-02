@@ -13,10 +13,10 @@ if len(sys.argv) >= 3:
 connection = pika.BlockingConnection(pika.URLParameters(url))
 channel = connection.channel()
 
-channel.exchange_declare(exchange='pubsub', type='topic',
+channel.exchange_declare(exchange='pubsub',
                          passive=True, durable=True)
 
-result = channel.queue_declare(exclusive=True)
+result = channel.queue_declare("", exclusive=True)
 queue_name = result.method.queue
 
 #channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key='#')
@@ -38,8 +38,7 @@ def callback(ch, method, properties, body):
         body=re.sub("^{", "{ \"routing_key\": \"" + method.routing_key +'", ', body)
         print(body)
 
-channel.basic_consume(callback,
-                      queue=queue_name,
-                      no_ack=True)
+channel.basic_consume(queue_name, callback,
+                      auto_ack=True)
 
 channel.start_consuming()
