@@ -10,7 +10,7 @@ if len(sys.argv) >= 2:
 prefix= "opensuse"
 if len(sys.argv) >= 3:
     prefix = sys.argv[2]
-connection = pika.BlockingConnection(pika.URLParameters(url))
+connection = pika.BlockingConnection(pika.URLParameters(url+"?heartbeat=20"))
 channel = connection.channel()
 
 channel.exchange_declare(exchange='pubsub',
