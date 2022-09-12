@@ -54,7 +54,7 @@ sub getsrdiffmentions($)
     return () if $sr <= 237365;
     my $xml=`osc -A https://$config::apiserver api -X POST "/request/$sr?cmd=diff&withissues=1&view=xml"`;
     $xml//=""; chomp($xml);
-    if(length($xml)>30000000) { warn "SR $sr reply too long(".length($xml).") - not sane - skipping..."; return () }
+    if(length($xml)>80000000) { warn "SR $sr reply too long(".length($xml).") - not sane - skipping..."; return () }
     if($? != 0) {
         warn "problem with SR $sr: $xml";
         return ();
