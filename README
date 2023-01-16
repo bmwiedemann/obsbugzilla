@@ -36,3 +36,7 @@ The script maintains an issuemention.dbm file about mentions that were already p
 Data is collected by code in source/*.pm and relevant entries are written to a pending queue dir by the various sources. E.g. queue/bnc#1234567/sr543210
 A sink process picks up entries from the queue when data is sufficiently aggregated (similar in spirit to TCP's Nagle algorithm) to avoid spamming bug-subscribers with emails about single SRs, but also not causing large delays in information flow. When bugzilla is down, enries remain in the queue. Updates for inaccessible bugs (usually about legal issues) have to be discarded.
 
+There are currently 2 sources: rabbitmq via a continuously running `sourcerabbit-wrapper.sh` process and as fallback regular OBS search API queries.
+As long as rabbitmq works fine, the fallback runs, but adds nothing to the queue. In case of trouble, the effect will be that updates only occur every 2 hours, 30-40 minutes after the cron-job ran.
+
+There are currently 2 sinks: bugzilla and jira. These update bugzilla.suse.com and jira.suse.com with links to SRs.
