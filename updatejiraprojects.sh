@@ -1,4 +1,6 @@
 #!/bin/sh
+# fetch the list of known projects from Jira's API
+# to know which jsc# values are valid
 # assumes ~/.netrc has credentials
 j=data/jiraproject.json
 mkdir -p data

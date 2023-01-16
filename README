@@ -40,3 +40,6 @@ There are currently 2 sources: rabbitmq via a continuously running `sourcerabbit
 As long as rabbitmq works fine, the fallback runs, but adds nothing to the queue. In case of trouble, the effect will be that updates only occur every 2 hours, 30-40 minutes after the cron-job ran.
 
 There are currently 2 sinks: bugzilla and jira. These update bugzilla.suse.com and jira.suse.com with links to SRs.
+
+maintenance:
+Ocassionally, the bugzilla server will misbehave and updating a bug fails. Then use `retrymany` with the failure email message as input (copy+paste works).
