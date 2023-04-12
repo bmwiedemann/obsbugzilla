@@ -26,7 +26,6 @@ sub addsrinfo($$)
 	$srinfo{$sr}=$extra;
 }
 
-use SOAP::Transport::HTTP;  # Need for Basic Authorization subroutine
 use XMLRPC::Lite;           # From the SOAP::Lite Module
 use JSON::XS;
 use config;
@@ -34,13 +33,8 @@ use config;
 my $bugzillahandle;
 sub bugzillahandle()
 {
-	$bugzillahandle=XMLRPC::Lite->proxy("https://${config::username}:$config::password\@apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
+	$bugzillahandle=XMLRPC::Lite->proxy("https://apibugzilla.suse.com/xmlrpc.cgi") if(!$bugzillahandle);
 	return $bugzillahandle;
-}
-
-sub SOAP::Transport::HTTP::Client::get_basic_credentials 
-{ 
-	return $config::username => $config::password;
 }
 
 sub die_on_fault 
@@ -51,22 +45,28 @@ sub die_on_fault
 	}
 }
 
+sub proxycall($$)
+{ my($func, $params)=@_;
+	my $proxy = bugzillahandle();
+	$params->{Bugzilla_login} = $config::username;
+	$params->{Bugzilla_api_key} = $config::password;
+	return $proxy->call($func, $params);
+}
+
 sub getsummary($)
 { my($bugid)=@_;
-	my $proxy=bugzillahandle();
 	my $soapresult;
 	my $result;
 	eval {
-		$soapresult = $proxy->call('Bug.get', {ids=>[$bugid]});
+		$soapresult = proxycall('Bug.get', {ids=>[$bugid]});
 		$result = $soapresult->{_content}->[4]->{params}->[0]->{bugs}->[0]->{summary};
 	};
 	return $result;
 }
 sub getbug($)
 { my($bugid)=@_;
-	my $proxy=bugzillahandle();
 	my $soapresult;
-	eval {$soapresult = $proxy->call('Bug.comments', {ids=>[$bugid]});};
+	eval {$soapresult = proxycall('Bug.comments', {ids=>[$bugid]});};
 	$soapresult ||= {_content=>[0,1,2,3,"failed $@"]};
 }
 sub bugjson($)
@@ -99,9 +99,8 @@ sub srurlplusinfo(@)
 
 sub addbugcomment($$;$)
 { my($bugid, $comment, $p)=@_;
-	my $proxy=bugzillahandle;
 	$p||=0;
-	my $soapresult2 = $proxy->call('Bug.add_comment', {id => $bugid, comment => $comment, is_private=>$p, private=>$p, isprivate=>$p});
+	my $soapresult2 = proxycall('Bug.add_comment', {id => $bugid, comment => $comment, is_private=>$p, private=>$p, isprivate=>$p});
 	die_on_fault($soapresult2);
 }
 
