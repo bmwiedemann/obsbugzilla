@@ -80,6 +80,8 @@ sub getsrmentions($)
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
             next if $p =~ /^patchinfo/;
+            my $sourceproject=$a->{source}->{project}||"";
+            next if $sourceproject eq 'openSUSE:Factory';
             $p=~s/_Update$//;
             $p=~s/_NonFree$//;
             $p=~s/-SP\d$//;
