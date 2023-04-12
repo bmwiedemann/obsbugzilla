@@ -62,7 +62,6 @@ sub getsummary($)
 	local $config::username=$config::username;
 	local $config::password=$config::password;
 	for my $trynumber (1..3) {
-	my $proxy=bugzillahandle();
 	my $soapresult;
 	eval {
 		$soapresult = proxycall('Bug.get', {ids=>[$bugid]});
