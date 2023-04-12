@@ -1,6 +1,6 @@
 package config;
 
-our ($username,$password);
+our ($username,$password,$apitoken);
 our $apiserver="api.opensuse.org";
 our $namespace="openSUSE:";
 our $bsname="OBS";

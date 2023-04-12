@@ -51,7 +51,7 @@ sub proxycall($$)
 { my($func, $params)=@_;
 	my $proxy = bugzillahandle();
 	$params->{Bugzilla_login} = $config::username;
-	$params->{Bugzilla_api_key} = $config::password;
+	$params->{Bugzilla_api_key} = $config::apitoken;
 	return $proxy->call($func, $params);
 }
 
