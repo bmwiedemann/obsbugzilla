@@ -110,11 +110,14 @@ sub getsrmentions($)
 	    next if $targetdistri1 =~ m/SaltBundleBeta/ and time() < 1672527600; # temp during devel requested by Dirk
 	    next if $targetdistri1 eq "SLE-15-SP6" and time() < 1701385200; # temp during devel
             next if $targetdistri1 eq "SLE-15-SP5" and time() < 1669849200; # temp during devel
+            next if $targetdistri1 eq "ALP:Workbench" and time() < 1688169600; # temp during devel
+            next if $targetdistri1 eq "ALP:Workbench:1.0" and time() < 1688169600; # temp during devel
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
             next if $p =~ /^patchinfo/;
             my $sourceproject=$a->{source}->{project}||"";
             next if $sourceproject eq 'openSUSE:Factory';
+            next if $sourceproject eq 'openSUSE.org:openSUSE:Factory';
             $p=~s/_Update$//;
             $p=~s/_NonFree$//;
             $p=~s/-SP\d$//;
