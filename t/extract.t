@@ -1,6 +1,6 @@
 use Test::More tests => 19;
 use lib '.';
-use extractchanges;
+use extractchanges::extractchanges;
 
 my $s1 = "t/sample1.changes";
 my $s3 = "t/sample3.changes";
