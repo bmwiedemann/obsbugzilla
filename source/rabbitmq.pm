@@ -12,6 +12,7 @@ sub fetchone()
     # map to search result structure:
     foreach my $a (@{$data->{actions}}) {
 	if($a->{sourcepackage}) { $a->{source}->{package} = $a->{sourcepackage} }
+	if($a->{sourceproject}) { $a->{source}->{project} = $a->{sourceproject} }
 	if($a->{targetpackage}) { $a->{target}->{package} = $a->{targetpackage} }
 	if($a->{targetproject}) { $a->{target}->{project} = $a->{targetproject} }
 	if($a->{target_releaseproject}) { $a->{target}->{releaseproject} = $a->{target_releaseproject} }
