@@ -27,3 +27,9 @@ sub init()
     if($ENV{RABBITTEST}) {$sourceprog="cat"}
     open(RABBITPIPE, "$sourceprog|") or die $!;
 }
+
+sub close()
+{
+    close(RABBITPIPE);
+    system("killall opensuserabbit.py");
+}
