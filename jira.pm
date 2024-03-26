@@ -32,7 +32,7 @@ sub getissue($$)
     my $data=decode_json($response->decoded_content);
     my $issuetype = $data->{fields}->{issuetype}->{name};
     my $status = $data->{fields}->{status}->{name};
-    if($issueid =~ m/^(SLE|PED)-/ and $srinfo =~ /SLE-15-SP6/ and ( $status =~ /Ready|Evaluation/i or $issuetype !~ /Implementation|Task/i)) { # TODO rework into updating jira ticket | notifying user
+    if($issueid =~ m/^(PED)-/ and $srinfo =~ /SLE-15-SP6/ and ( $status =~ /Ready|Evaluation/i or $issuetype !~ /Implementation|Task/i)) { # TODO rework into updating jira ticket | notifying user
         system("echo 'jira warning: https://jira.suse.com/browse/$issueid status=$status issuetype=$issuetype\n$srinfo' | mailx -s IBS/obsbugzilla/jira rtsvetkov\@suse.com");
     }
     return $data;
