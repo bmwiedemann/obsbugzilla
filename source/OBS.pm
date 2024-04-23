@@ -151,6 +151,7 @@ sub getsrmentions($)
         push(@mentionids, ($descr=~m/\b(\w+#\d{3,})/g));
         push(@mentionids, ($descr=~m/\b(CVE-20[1-4]\d-\d{4,})\b/g));
         foreach my $mention (@mentionids) {
+            $mention=~s/^ijsc#/jsc#/;            #jira.suse.com in MR https://build.suse.de/request/show/326349
             $mention=~s/boo#(\d{6,7}\b)/bnc#$1/; #bugzilla.opensuse.org
             $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
             $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
