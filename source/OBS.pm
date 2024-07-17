@@ -119,7 +119,6 @@ sub getsrmentions($)
             my $sourceproject=$a->{source}->{project}||"";
             next if $sourceproject =~ /^ALP:/;
             next if $sourceproject eq 'openSUSE:Factory';
-            next if $sourceproject eq 'openSUSE.org:openSUSE:Factory';
             $p=~s/_Update$//;
             $p=~s/_NonFree$//;
             $p=~s/-SP\d$//;
