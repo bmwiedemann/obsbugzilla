@@ -79,6 +79,7 @@ sub getsrmentions($)
             $targetdistri1=~s/Leap://;
             next if $targetdistri1 eq "15.2" and time() < 1583017200; # temp during devel
             next if $targetdistri1 eq "15.3" and time() < 1614553200; # temp during devel
+            next if $targetdistri1 eq "16.0" and time() < 1735603200; # temp during devel
             next if $targetdistri1 eq "ALP:Workbench:1.0" and time() < 1688169600; # temp during devel
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
