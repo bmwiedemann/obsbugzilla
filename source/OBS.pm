@@ -108,8 +108,11 @@ sub getsrmentions($)
             $targetdistri1=~s/Leap://;
 	    next if $targetdistri1 eq "SLE-15-SP2:MicroOS" and time() < 1640991600; # temp during devel
 	    next if $targetdistri1 =~ m/SaltBundleBeta/ and time() < 1672527600; # temp during devel requested by Dirk
+	    next if $targetdistri1 eq "SLE-15-SP7" and time() < 1733007600 and $data->{state} ne "accepted"; # temp during devel
 	    next if $targetdistri1 eq "SLE-15-SP6" and time() < 1701385200 and $data->{state} ne "accepted"; # temp during devel
             next if $targetdistri1 eq "SLE-15-SP5" and time() < 1669849200 and $data->{state} ne "accepted"; # temp during devel
+            next if $targetdistri1 eq "SLFO:Main" and time() < 1735603200 and $data->{state} ne "accepted"; # temp during devel
+            next if $targetdistri1 eq "SLE-15-SP6:AI" and time() < 1735603200; # temp during devel
             next if $targetdistri1 eq "ALP:Workbench" and time() < 1688169600; # temp during devel
             next if $targetdistri1 eq "ALP:Workbench:1.0" and time() < 1688169600; # temp during devel
             next if $targetdistri1 eq "SUSE:ALP:Source:Standard:1.0" and time() < 1711922400 and $data->{state} ne "accepted"; # temp during devel
