@@ -27,7 +27,7 @@ Group:          Development/Tools/Other
 BuildArch:      noarch
 Source0:        https://github.com/bmwiedemann/obsbugzilla/archive/refs/tags/v%version.tar.gz#/%name-%version.tar.gz
 BuildRequires:  shadow
-Requires:       perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS perl-LWP-Protocol-https perl-MLDBM python3-pika osc
+Requires:       perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS perl-XML-Simple perl-LWP-Protocol-https perl-MLDBM python3-pika osc
 Requires(pre):  %{_sbindir}/useradd
 Requires(pre):  group(nogroup)
 Provides:       user(obsbugzilla)
@@ -71,5 +71,6 @@ fi
 %{_unitdir}/obsbugzilla-sink.*
 %{_unitdir}/obsbugzilla-sourceobs.*
 %attr(755,obsbugzilla,root) %{_localstatedir}/lib/%name
+%ghost %{_localstatedir}/lib/obsbugzilla/.bugzillarc
 
 %changelog

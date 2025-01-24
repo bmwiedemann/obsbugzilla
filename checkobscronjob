@@ -1,0 +1,4 @@
+#!/bin/sh
+./updatejiraprojects.sh
+./sourceobs.pl
+./cleanup.sh
