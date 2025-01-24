@@ -2,6 +2,7 @@
 Description=obsbugzilla: query OBS for new SRs
 
 [Service]
-Type=oneshot
 WorkingDirectory=/usr/libexec/obsbugzilla
+User=obsbugzilla
+Type=oneshot
 ExecStart=/usr/libexec/obsbugzilla/sourceobs.pl

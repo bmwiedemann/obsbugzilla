@@ -5,7 +5,7 @@ After=network.target remote-fs.target
 [Service]
 WorkingDirectory=/usr/libexec/obsbugzilla
 User=obsbugzilla
-ExecStart=/usr/bin/sourcerabbit-wrapper.sh
+ExecStart=/usr/libexec/obsbugzilla/sourcerabbit-wrapper.sh
 Restart=always
 
 [Install]

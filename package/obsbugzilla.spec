@@ -15,6 +15,7 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
+%define systemdservices obsbugzilla-sink.service obsbugzilla-sourceobs.service obsbugzilla-rabbit.service
 
 Name:           obsbugzilla
 Version:        1.0.0
@@ -22,11 +23,11 @@ Release:        0
 Summary:        Bot code to inform bugzilla+jira users about SRs
 License:        GPL-2.0+
 Url:            https://github.com/bmwiedemann/obsbugzilla
-Group:          Tools
+Group:          Development/Tools/Other
 BuildArch:      noarch
 Source0:        https://github.com/bmwiedemann/obsbugzilla/archive/refs/tags/v%version.tar.gz#/%name-%version.tar.gz
 BuildRequires:  shadow
-Requires:       perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS perl-LWP-Protocol-https perl-MLDBM python-pika osc
+Requires:       perl-SOAP-Lite perl-XMLRPC-Lite perl-JSON-XS perl-LWP-Protocol-https perl-MLDBM python3-pika osc
 Requires(pre):  %{_sbindir}/useradd
 Requires(pre):  group(nogroup)
 Provides:       user(obsbugzilla)
@@ -41,7 +42,7 @@ and Jira+Bugzilla issues mentioned will be updated by the bot.
 %build
 
 %install
-make install DESTDIR=%{buildroot}
+make install DESTDIR=%{buildroot} LIBEXECDIR=%{_libexecdir}/%name
 
 %check
 #make test
@@ -51,6 +52,16 @@ if ! %{_bindir}/getent passwd obsbugzilla >/dev/null; then
    %{_sbindir}/useradd -r -c "Daemon user for obsbugzilla bot" -g nogroup -s /bin/sh \
    -d %{_localstatedir}/lib/obsbugzilla obsbugzilla
 fi
+%service_add_pre %{systemdservices}
+
+%post
+%service_add_post %{systemdservices}
+
+%preun
+%service_del_preun %{systemdservices}
+
+%postun
+%service_del_postun %{systemdservices}
 
 %files
 %doc README
@@ -59,7 +70,6 @@ fi
 %{_unitdir}/obsbugzilla-rabbit.service
 %{_unitdir}/obsbugzilla-sink.*
 %{_unitdir}/obsbugzilla-sourceobs.*
-#{_datadir}/%name
 %attr(755,obsbugzilla,root) %{_localstatedir}/lib/%name
 
 %changelog

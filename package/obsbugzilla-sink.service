@@ -2,6 +2,7 @@
 Description=obsbugzilla: update Bugzilla+Jira about SRs
 
 [Service]
-Type=oneshot
 WorkingDirectory=/usr/libexec/obsbugzilla
+User=obsbugzilla
+Type=oneshot
 ExecStart=/usr/libexec/obsbugzilla/sink.pl
