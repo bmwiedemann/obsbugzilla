@@ -1,0 +1,7 @@
+[Unit]
+Description=obsbugzilla: update Bugzilla+Jira about SRs
+
+[Service]
+Type=oneshot
+WorkingDirectory=/usr/libexec/obsbugzilla
+ExecStart=/usr/libexec/obsbugzilla/sink.pl

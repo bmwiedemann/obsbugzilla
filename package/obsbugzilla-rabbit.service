@@ -1,0 +1,12 @@
+[Unit]
+Description=Rabbitmq listener for OBS-bugzilla integration
+After=network.target remote-fs.target
+
+[Service]
+WorkingDirectory=/usr/libexec/obsbugzilla
+User=obsbugzilla
+ExecStart=/usr/bin/sourcerabbit-wrapper.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -7,6 +7,7 @@ use strict;
 
 use MLDBM qw(DB_File Storable);
 use Fcntl qw(:DEFAULT :flock);
+use lib "/usr/libexec/obsbugzilla";
 use lib ".";
 use config;
 use common;
@@ -14,7 +15,7 @@ use obssupport;
 open(my $fh, '>>', ".lockfile") or die $!;
 flock($fh, LOCK_EX) or die $!;
 my %data;
-my $dbname="issuemention.dbm";
+my $dbname="data/issuemention.dbm";
 tie(%data, "MLDBM", $dbname, O_RDWR|O_CREAT, 0666) or die "error opening DB: $!";
 my %bugmap1=%data;
 my %bugmap2=%bugmap1;

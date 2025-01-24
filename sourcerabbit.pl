@@ -3,6 +3,7 @@ use strict;
 # usage: ./sourcerabbit.pl
 # fetches rabbitmq events and stores entries in queue dir
 use JSON::XS;
+use lib "/usr/libexec/obsbugzilla";
 use lib ".";
 use config;
 use common;

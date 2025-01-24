@@ -1,0 +1,7 @@
+[Timer]
+OnCalendar=*:2,12,22,32,42,52
+RandomizedDelaySec=15
+Persistent=true
+
+[Install]
+WantedBy=timers.target

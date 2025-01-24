@@ -1,0 +1,7 @@
+[Unit]
+Description=obsbugzilla: query OBS for new SRs
+
+[Service]
+Type=oneshot
+WorkingDirectory=/usr/libexec/obsbugzilla
+ExecStart=/usr/libexec/obsbugzilla/sourceobs.pl
