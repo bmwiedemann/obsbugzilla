@@ -143,6 +143,7 @@ sub addsrlinks($@)
 			if(!$summary) {
 				print "error - https://bugzilla.suse.com/show_bug.cgi?id=$bugid does not have a summary - does it even exist?\nSkipping...\n";
 				for my $sr (@sr2) {
+					$sr =~ s/[^0-9]//g; # sanitize
 					my $srdetail = `osc -A https://$config::apiserver rq show "$sr"`;
 					next if $srdetail =~ /not found - please check/;
 					system("osc", "-A", "https://$config::apiserver", qw"comment create -c", "warning: referenced bsc#$bugid not found - please check", "request", $sr);
