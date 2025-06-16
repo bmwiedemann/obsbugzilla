@@ -38,6 +38,8 @@ foreach my $mention (keys %$mentions) {
 
 # check which entries were new
 foreach our $bugid (sort(keys(%bugmap2))) {
+	next if $bugid =~ /jsc#SLE-(?:1660|95282)/;
+	next if $bugid =~ /jsc#\d/;
 	our $diff=common::diffhash($bugmap2{$bugid}, $bugmap1{$bugid});
 	if($diff && @$diff) {
 		for my $sink (@sinks) {
