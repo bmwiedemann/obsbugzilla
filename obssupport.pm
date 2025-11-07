@@ -107,7 +107,7 @@ sub addbugcomment($$;$)
 sub addsrlinks($@)
 { my($bugid, @sr)=@_;
 	return 2 unless $bugid=~s/^bnc#//; # ignore others for now
-	return 2 if $bugid < 1040000; # ignore bugs older than 5y
+	return 2 if $bugid < 1200000; # ignore bugs older than 2022-05
 	eval { # catch die
 		my @sr2=@sr;
 		if(!$debug) { @sr2=filtersr(bugjson(getbug($bugid)), @sr);}
