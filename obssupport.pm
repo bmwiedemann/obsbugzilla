@@ -65,6 +65,14 @@ sub getsummary($)
 	};
 	return $result;
 }
+
+sub geturl($)
+{ my $id = shift;
+    my $url = "https://$config::buildserver/request/show/$id";
+    if($srdata{$id} && $srdata{$id}->{url}) { $url = $srdata{$id}->{url} }
+    return $url
+}
+
 sub getbug($)
 { my($bugid)=@_;
 	my $soapresult;
@@ -83,7 +91,8 @@ sub filtersr($@)
 	return @sr2 if($bugjson=~m/\Afailed /);
 	# drop linked SRs:
 	foreach my $sr (@sr) {
-		next if $bugjson=~m/request\/show\/$sr\b/;
+	        my $url = geturl($sr);
+		next if $bugjson=~m/$url\b/;
 		push(@sr2, $sr); # keep sr
 	}
 	return @sr2;
@@ -95,9 +104,7 @@ sub srurlplusinfo(@)
 		my $sr=$_;
 		my $info="";
 		if(my $i=$srinfo{$sr}) {$info=" $i"}
-		my $url;
-		if($srdata{$sr} && $srdata{$sr}->{url}) { $url = $srdata{$sr}->{url} }
-		common::srurl($url, $sr, $info)."\n";
+		common::srurl(geturl($sr), $sr, $info)."\n";
 	 } @_);
 }
 

@@ -38,7 +38,8 @@ sub filtersr($@)
 	return @sr2 if($bugjson=~m/\A\[\]/);
 	# drop SRs that were already linked:
 	foreach my $sr (@sr) {
-		next if $bugjson=~m/request\/show\/$sr\b/;
+		my $url = obssupport::geturl($sr);
+		next if $bugjson=~m/$url\b/;
 		push(@sr2, $sr); # keep sr
 	}
 	return @sr2;
