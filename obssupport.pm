@@ -11,6 +11,7 @@ $VERSION = "1.0";
 );
 
 our %srinfo=();
+our %srdata=();
 our $debug=0;
 
 sub addentry($$$)
@@ -21,9 +22,10 @@ sub addentry($$$)
 	$bugmap->{$bugid}=\%h;
 }
 
-sub addsrinfo($$)
-{ my($sr,$extra)=@_;
+sub addsrinfo($$;$)
+{ my($sr,$extra,$data)=@_;
 	$srinfo{$sr}=$extra;
+	$srdata{$sr}=$data;
 }
 
 use XMLRPC::Lite;           # From the SOAP::Lite Module
@@ -93,7 +95,9 @@ sub srurlplusinfo(@)
 		my $sr=$_;
 		my $info="";
 		if(my $i=$srinfo{$sr}) {$info=" $i"}
-		common::srurl($sr.$info)."\n";
+		my $url;
+		if($srdata{$sr} && $srdata{$sr}->{url}) { $url = $srdata{$sr}->{url} }
+		common::srurl($url, $sr, $info)."\n";
 	 } @_);
 }
 

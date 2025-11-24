@@ -32,7 +32,7 @@ foreach my $mention (keys %$mentions) {
         my ($sr, $extra) = ($id, $e->{extra});
         diag("$sr ($extra) mention: $mention");
         addentry(\%bugmap2, $mention, $sr);
-        addsrinfo($sr, $extra);
+        addsrinfo($sr, $extra, $e);
     }
 }
 

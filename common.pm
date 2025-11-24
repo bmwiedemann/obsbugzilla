@@ -3,9 +3,11 @@ use JSON::XS;
 
 our $minage=30*60;
 
-sub srurl(@)
+sub srurl($$$)
 {
-	return join("",map {"https://$config::buildserver/request/show/$_"} @_);
+	my ($url, $sr, $info) = @_;
+	if (!$url) { $url = "https://$config::buildserver/request/show/$sr" }
+	return $url.$info;
 }
 
 sub get_file_content($) {my($fn)=@_;;
