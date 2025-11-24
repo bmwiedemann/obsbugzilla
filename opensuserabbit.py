@@ -1,5 +1,6 @@
-#!/usr/bin/python -u
+#!/usr/bin/python3 -u
 import pika
+import re
 import sys
 
 # or amqps://suse:suse@rabbit.suse.de
@@ -30,6 +31,9 @@ channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key=prefix+'.obs.
 # opensuse.obs.package.commit ... "requestid":"539138"}
 def callback(ch, method, properties, body):
     #if method.routing_key == "opensuse.obs.request.create":
+        body=body.decode("utf-8", "ignore")
+        body=body.replace("\n"," ")
+        body=re.sub("^{", "{ \"routing_key\": \"" + method.routing_key +'", ', body)
         print(body)
 
 channel.basic_consume(callback,
