@@ -19,6 +19,8 @@ sub getprmentions($)
     push(@mentionids, ($descr=~m/\b(CVE-20[1-4]\d-\d{4,})\b/g));
     my @mentions;
     foreach my $mention (@mentionids) {
+        $mention=~s,https?://bugzilla\.opensuse\.org/show_bug\.cgi\?id=,boo#,;
+        $mention=~s,https?://bugzilla\.suse.com/show_bug\.cgi\?id=,bsc#,;
         $mention=~s/boo#(\d{6,7}\b)/bnc#$1/; #bugzilla.opensuse.org
         $mention=~s/bsc#(\d{6,7}\b)/bnc#$1/; #bugzilla.suse.com
         $mention=~s/bug#(\d{6,7}\b)/bnc#$1/; # TODO: needs update when bug numbers go higher
