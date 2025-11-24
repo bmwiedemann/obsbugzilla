@@ -7,7 +7,7 @@ our $jiraprojectre = join("|", common::getjiraprojects());
 sub getprmentions($)
 {
     my $data=shift;
-    my $descr=$data->{pull_request}{body};
+    my $descr=$data->{pull_request}{title}.$data->{pull_request}{body};
     my $sr = $data->{pull_request}{url};
     $sr =~ s!https://[^/]+/!!; $sr=~s!/!:!g; $sr=~s/:pulls:/:/;
     my $package;
