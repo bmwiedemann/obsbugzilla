@@ -19,6 +19,8 @@ channel.exchange_declare(exchange='pubsub', type='topic',
 result = channel.queue_declare(exclusive=True)
 queue_name = result.method.queue
 
+#channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key='#')
+channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key=prefix+'.src.*.pull_request.*')
 channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key=prefix+'.obs.request.create')
 channel.queue_bind(exchange='pubsub', queue=queue_name,routing_key=prefix+'.obs.request.state_change')
 
