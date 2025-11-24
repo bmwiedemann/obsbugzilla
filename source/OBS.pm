@@ -121,6 +121,7 @@ sub getsrmentions($)
             $p=$a->{target}->{package} || $a->{source}->{package};
             next unless $p;
             next if $p =~ /^patchinfo/;
+            next if $p =~ /^SLE-Module-Live-Patching_/;
             my $sourceproject=$a->{source}->{project}||"";
             next if $sourceproject =~ /^ALP:/;
             next if $sourceproject eq 'openSUSE:Factory';
