@@ -3,10 +3,11 @@ use JSON::XS;
 
 our $minage=30*60;
 
-sub srurl($$$)
+sub srurl($;$$)
 {
-	my ($url, $sr, $info) = @_;
+	my ($sr, $url, $info) = @_;
 	if (!$url) { $url = "https://$config::buildserver/request/show/$sr" }
+	$info ||= "";
 	return $url.$info;
 }
 

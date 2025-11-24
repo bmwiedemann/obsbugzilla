@@ -104,7 +104,7 @@ sub srurlplusinfo(@)
 		my $sr=$_;
 		my $info="";
 		if(my $i=$srinfo{$sr}) {$info=" $i"}
-		common::srurl(geturl($sr), $sr, $info)."\n";
+		common::srurl($sr, geturl($sr), $info)."\n";
 	 } @_);
 }
 
