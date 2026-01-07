@@ -19,7 +19,9 @@ source::rabbitmq::init();
 while(my $data=source::rabbitmq::fetchone()) {
     alarm(24*3600);
     my $srmentions;
-    if($data->{routing_key} =~ /\.src\..*pull_request/) {
+    if(exists($data->{body}) || $data->{routing_key} =~ /\.src\..*pull_request/) {
+        if(exists $data->{pull_request}) { $data = $data->{pull_request} }
+        if(exists $data->{json}) { $data = $data->{json} }
         $srmentions=source::gitea::getprmentions($data);
     } else {
         $srmentions=source::OBS::getsrmentions($data);
