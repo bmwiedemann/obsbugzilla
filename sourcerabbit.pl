@@ -27,7 +27,7 @@ while(my $data=source::rabbitmq::fetchone()) {
         $srmentions=source::OBS::getsrmentions($data);
     }
     foreach my $m (@$srmentions) {
-        diag("adding $data->{number} ".encode_json($m));
+        diag("adding $data->{number} ".JSON::XS->new->canonical->encode($m));
 	common::enqueue($m);
     }
 }
